@@ -160,3 +160,9 @@
 }
 @media (width >= 64rem) { .footer { --footer-mark-height: 2.5rem; } }
 @media (width >= 90rem) { .footer { --footer-lockup-height: 4rem; --footer-mark-height: 3rem; } }
+
+/* Light/dark image pairs: both are rendered, CSS shows one (data-theme is set on
+   <html> before paint, so there is no flash). */
+.footer .footer-img-dark { display: none; }
+html[data-theme="dark"] .footer .footer-img-light { display: none; }
+html[data-theme="dark"] .footer .footer-img-dark { display: block; }
