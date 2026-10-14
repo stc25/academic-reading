@@ -15,6 +15,9 @@
     })();
   </script>
   <title>{% block title %}Academic Reading{% endblock %} — Cambridge Language Centre</title>
+  <link rel="icon" type="image/png" href="{% static 'reading/img/logo/logo.png' %}">
+  <link rel="icon" type="image/png" href="{% static 'reading/img/logo/logo-dark.png' %}" media="(prefers-color-scheme: dark)">
+  <link rel="apple-touch-icon" href="{% static 'reading/img/logo/logo-dark.png' %}">
   <link rel="stylesheet" href="{% static 'reading/css/tokens.css' %}">
   <link rel="stylesheet" href="{% static 'reading/css/app.css' %}">
   <link rel="stylesheet" href="{% static 'reading/css/footer.css' %}">
@@ -24,7 +27,10 @@
   <a class="skip-link" href="#content">Skip to main content</a>
   <header class="masthead">
     <div class="wrap">
-      <a class="brand" href="{% url 'reading:home' %}">📖 Academic Reading</a>
+      <a class="brand" href="{% url 'reading:home' %}">
+        <img class="brand-logo" src="{% static 'reading/img/logo/logo-dark.png' %}" alt="" width="32" height="32">
+        <span>Academic Reading</span>
+      </a>
       <nav aria-label="Main">
         <a href="{% url 'reading:home' %}"{% if request.resolver_match.url_name != 'history' %} aria-current="page"{% endif %}>Library</a>
         <a href="{% url 'reading:history' %}"{% if request.resolver_match.url_name == 'history' %} aria-current="page"{% endif %}>History</a>
