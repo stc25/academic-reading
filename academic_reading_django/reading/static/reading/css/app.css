@@ -289,3 +289,23 @@ p { line-height: var(--leading-body); }
 @media (prefers-reduced-motion: reduce) {
   .theme-switch, .theme-switch::after { transition: none; }
 }
+
+/* --- Back to top (after lc-base-template's BackToTopButton) ---------------------
+   Fixed disc, shown once the reader has scrolled a screen or so. Hidden state only
+   applies via .back-to-top itself, so it is never in the tab order while invisible. */
+.back-to-top {
+  position: fixed; right: var(--space-24); bottom: var(--space-24); z-index: 50;
+  display: flex; align-items: center; justify-content: center;
+  width: 2.75rem; height: 2.75rem; padding: 0;
+  border: 1px solid var(--divider-strong); border-radius: 50%;
+  background: var(--button-primary-bg); color: var(--button-primary-text);
+  box-shadow: var(--shadow-md); cursor: pointer;
+  opacity: 0; visibility: hidden; transform: translateY(8px);
+  transition: opacity 250ms var(--ease-standard), transform 250ms var(--ease-standard), visibility 0s linear 250ms, background var(--duration-fast) var(--ease-standard);
+}
+.back-to-top.is-visible { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+.back-to-top:hover { background: var(--button-primary-hover); }
+.back-to-top svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+@media (prefers-reduced-motion: reduce) {
+  .back-to-top, .back-to-top.is-visible { transition: none; transform: none; }
+}
