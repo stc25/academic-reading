@@ -1,0 +1,47 @@
+{% load static %}
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-identity">
+      <a class="footer-lockup" href="https://www.langcen.cam.ac.uk/" target="_blank" rel="noopener noreferrer">
+        <img class="footer-lockup-image" src="{% static 'reading/img/footer/ucam-lockup-light.png' %}" alt="University of Cambridge Language Centre" width="1200" height="173" loading="lazy">
+        <span class="sr-only"> (opens in a new tab)</span>
+      </a>
+      <p class="footer-copyright">© {% now "Y" %} University of Cambridge</p>
+    </div>
+
+    <div class="footer-cluster">
+      <ul class="footer-mark-row">
+        <li><a class="footer-mark" href="https://www.langcen.cam.ac.uk/culp/culp-index.html" target="_blank" rel="noopener noreferrer"><img class="footer-mark-image" src="{% static 'reading/img/footer/lc-logo-black.svg' %}" alt="Language Centre — CULP course index" width="595" height="831" loading="lazy"><span class="sr-only"> (opens in a new tab)</span></a></li>
+        <li><a class="footer-mark" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener noreferrer"><img class="footer-mark-image" src="{% static 'reading/img/footer/cc-logo-black.svg' %}" alt="Licence: CC BY-NC 4.0" width="64" height="64" loading="lazy"><span class="sr-only"> (opens in a new tab)</span></a></li>
+        <li><a class="footer-mark" href="https://www.langcen.cam.ac.uk/opencourseware" target="_blank" rel="noopener noreferrer"><img class="footer-mark-image" src="{% static 'reading/img/footer/elearning-logo-black.svg' %}" alt="Language Centre eLearning — open courseware" width="385" height="394" loading="lazy"><span class="sr-only"> (opens in a new tab)</span></a></li>
+      </ul>
+      <div class="footer-social" role="group" aria-label="Follow us">
+        <a class="footer-social-link" href="https://www.facebook.com/uclangcen/" target="_blank" rel="noopener noreferrer">
+          <svg class="footer-social-icon" aria-hidden="true" focusable="false"><use href="{% static 'reading/img/icons.svg' %}#brand-facebook"></use></svg>
+          <span class="sr-only">Facebook (opens in a new tab)</span>
+        </a>
+        <a class="footer-social-link" href="https://x.com/uclangcen" target="_blank" rel="noopener noreferrer">
+          <svg class="footer-social-icon" aria-hidden="true" focusable="false"><use href="{% static 'reading/img/icons.svg' %}#brand-x"></use></svg>
+          <span class="sr-only">X (Twitter) (opens in a new tab)</span>
+        </a>
+        <a class="footer-social-link" href="https://www.youtube.com/cambridgeuniversity" target="_blank" rel="noopener noreferrer">
+          <svg class="footer-social-icon" aria-hidden="true" focusable="false"><use href="{% static 'reading/img/icons.svg' %}#brand-youtube"></use></svg>
+          <span class="sr-only">YouTube (opens in a new tab)</span>
+        </a>
+        <a class="footer-social-link" href="https://www.linkedin.com/company/university-of-cambridge-language-centre/" target="_blank" rel="noopener noreferrer">
+          <svg class="footer-social-icon" aria-hidden="true" focusable="false"><use href="{% static 'reading/img/icons.svg' %}#brand-linkedin"></use></svg>
+          <span class="sr-only">LinkedIn (opens in a new tab)</span>
+        </a>
+        <a class="footer-social-link" href="https://www.instagram.com/cambridgeuniversity/" target="_blank" rel="noopener noreferrer">
+          <svg class="footer-social-icon" aria-hidden="true" focusable="false"><use href="{% static 'reading/img/icons.svg' %}#brand-instagram"></use></svg>
+          <span class="sr-only">Instagram (opens in a new tab)</span>
+        </a>
+      </div>
+    </div>
+
+    <p class="footer-licence">
+      This work is licensed under the Creative Commons Attribution-NonCommercial 4.0 International Licence. To view a copy of this licence, visit
+      <a class="footer-licence-link" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener noreferrer">creativecommons.org<span class="sr-only"> (opens in a new tab)</span></a>
+    </p>
+  </div>
+</footer>

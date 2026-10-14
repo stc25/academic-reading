@@ -1,0 +1,623 @@
+{
+  "_comment": "Source manifest for the Academic-Reading starter corpus. 'copyright': PD = public domain, FD = in copyright, used as a short fair-dealing excerpt. Five entries were removed in v1.1 because the text could not be obtained — see manifest.json 'dropped'. The finished excerpts live in <lang>/<id>.txt; this file records where they came from.",
+  "_version": "1.1",
+  "_generated": "2026-08-15",
+  "texts": [
+    {
+      "id": "de-01",
+      "lang": "de",
+      "author": "Karl Marx & Friedrich Engels",
+      "title": "Manifest der Kommunistischen Partei — I. Bourgeois und Proletarier",
+      "year": 1848,
+      "topic": "politics/economics",
+      "copyright": "PD",
+      "orthography": "pre-1901, modernise",
+      "resolve": {
+        "type": "url",
+        "url": "https://www.marxists.org/deutsch/archiv/marx-engels/1848/manifest/1-bourprol.htm"
+      },
+      "excerpt_note": "Take from the opening ('Die Geschichte aller bisherigen Gesellschaft...') through the account of the bourgeoisie's revolutionising of production.",
+      "extracted": "de/de-01.txt"
+    },
+    {
+      "id": "de-02",
+      "lang": "de",
+      "author": "Otto von Bismarck",
+      "title": "Reichstagsrede vom 6. Februar 1888",
+      "year": 1888,
+      "topic": "politics",
+      "copyright": "PD",
+      "orthography": "pre-1901, modernise",
+      "resolve": {
+        "type": "wikisource_search",
+        "wiki": "de",
+        "query": "Bismarck Rede 6. Februar 1888 Reichstag"
+      },
+      "excerpt_note": "The closing section containing 'Wir Deutsche fürchten Gott, sonst nichts auf der Welt'.",
+      "extracted": "de/de-02.txt"
+    },
+    {
+      "id": "de-03",
+      "lang": "de",
+      "author": "Friedrich Nietzsche",
+      "title": "Zur Genealogie der Moral — Erste Abhandlung, §§ 1–5",
+      "year": 1887,
+      "topic": "philosophy",
+      "copyright": "PD",
+      "orthography": "pre-1901, modernise",
+      "resolve": {
+        "type": "url",
+        "url": "http://www.zeno.org/Philosophie/M/Nietzsche,+Friedrich/Zur+Genealogie+der+Moral"
+      },
+      "excerpt_note": "Sections 1-5 of the first treatise (Gut und Böse / Gut und Schlecht).",
+      "extracted": "de/de-03.txt"
+    },
+    {
+      "id": "de-04",
+      "lang": "de",
+      "author": "Ferdinand Tönnies",
+      "title": "Gemeinschaft und Gesellschaft — Buch I, Einleitung",
+      "year": 1887,
+      "topic": "sociology",
+      "copyright": "PD",
+      "orthography": "pre-1901, modernise",
+      "resolve": {
+        "type": "wikisource_search",
+        "wiki": "de",
+        "query": "Tönnies Gemeinschaft und Gesellschaft"
+      },
+      "fallback_url": "https://archive.org/details/gemeinschaftund00tngoog",
+      "excerpt_note": "The opening definition of Gemeinschaft against Gesellschaft.",
+      "extracted": "de/de-04.txt"
+    },
+    {
+      "id": "de-05",
+      "lang": "de",
+      "author": "Georg Simmel",
+      "title": "Die Großstädte und das Geistesleben",
+      "year": 1903,
+      "topic": "sociology/culture",
+      "copyright": "PD",
+      "orthography": "modern",
+      "resolve": {
+        "type": "url",
+        "url": "https://socio.ch/sim/verschiedenes/1903/grossstaedte.htm"
+      },
+      "excerpt_note": "Opening through the discussion of Blasiertheit and the money economy.",
+      "extracted": "de/de-05.txt"
+    },
+    {
+      "id": "de-06",
+      "lang": "de",
+      "author": "Rosa Luxemburg",
+      "title": "Die russische Revolution — Demokratie und Diktatur",
+      "year": 1918,
+      "topic": "politics",
+      "copyright": "PD",
+      "orthography": "modern",
+      "resolve": {
+        "type": "url",
+        "url": "https://www.marxists.org/deutsch/archiv/luxemburg/1918/russrev/index.htm"
+      },
+      "excerpt_note": "The chapter containing 'Freiheit ist immer die Freiheit des Andersdenkenden'. Follow the chapter link from the index page.",
+      "extracted": "de/de-06.txt"
+    },
+    {
+      "id": "de-07",
+      "lang": "de",
+      "author": "Max Weber",
+      "title": "Politik als Beruf — Schluss (Gesinnungsethik und Verantwortungsethik)",
+      "year": 1919,
+      "topic": "politics/sociology",
+      "copyright": "PD",
+      "orthography": "modern",
+      "resolve": {
+        "type": "wikisource",
+        "wiki": "de",
+        "title": "Politik als Beruf"
+      },
+      "excerpt_note": "From the introduction of Gesinnungsethik vs Verantwortungsethik to the 'Dennoch!' ending.",
+      "extracted": "de/de-07.txt"
+    },
+    {
+      "id": "de-08",
+      "lang": "de",
+      "author": "Sigmund Freud",
+      "title": "Das Unbehagen in der Kultur — Kapitel II",
+      "year": 1930,
+      "topic": "psychology/culture",
+      "copyright": "PD",
+      "orthography": "modern",
+      "resolve": {
+        "type": "wikisource_search",
+        "wiki": "de",
+        "query": "Freud Das Unbehagen in der Kultur"
+      },
+      "fallback_url": "https://archive.org/details/dasunbehageninde0000freu",
+      "excerpt_note": "The discussion of what people demand of life and the three sources of suffering.",
+      "extracted": "de/de-08.txt"
+    },
+    {
+      "id": "de-09",
+      "lang": "de",
+      "author": "Theodor W. Adorno",
+      "title": "Erziehung nach Auschwitz",
+      "year": 1966,
+      "topic": "philosophy/education",
+      "copyright": "FD",
+      "orthography": "modern",
+      "resolve": {
+        "type": "supplied",
+        "url": "user-supplied PDF (Erziehung nach Auschwitz)"
+      },
+      "excerpt_note": "Opening pages. Widely anthologised; take a ~1000-word excerpt from a copy you hold.",
+      "extracted": "de/de-09.txt"
+    },
+    {
+      "id": "de-10",
+      "lang": "de",
+      "author": "Richard von Weizsäcker",
+      "title": "Rede zum 40. Jahrestag der Beendigung des Krieges, 8. Mai 1985",
+      "year": 1985,
+      "topic": "politics/history",
+      "copyright": "FD",
+      "orthography": "modern",
+      "resolve": {
+        "type": "wikisource_search",
+        "wiki": "de",
+        "query": "Weizsäcker Rede 8. Mai 1985"
+      },
+      "fallback_url": "https://www.bundespraesident.de",
+      "excerpt_note": "Officially published by the Bundespräsidialamt. The section on remembrance ('Der 8. Mai war ein Tag der Befreiung').",
+      "extracted": "de/de-10.txt"
+    },
+    {
+      "id": "de-11",
+      "lang": "de",
+      "author": "Oswald Spengler",
+      "title": "Der Untergang des Abendlandes — Einleitung",
+      "year": 1918,
+      "topic": "history/culture",
+      "copyright": "PD",
+      "orthography": "modern",
+      "resolve": {
+        "type": "wikisource_search",
+        "wiki": "de",
+        "query": "Spengler Der Untergang des Abendlandes"
+      },
+      "fallback_url": "https://archive.org/details/deruntergangdesa01spen",
+      "excerpt_note": "The opening statement of the morphology of world history.",
+      "extracted": "de/de-11.txt"
+    },
+    {
+      "id": "fr-01",
+      "lang": "fr",
+      "author": "Alexis de Tocqueville",
+      "title": "L'Ancien Régime et la Révolution — Livre III, ch. IV",
+      "year": 1856,
+      "topic": "politics/history",
+      "copyright": "PD",
+      "resolve": {
+        "type": "wikisource",
+        "wiki": "fr",
+        "title": "L’Ancien Régime et la Révolution"
+      },
+      "excerpt_note": "Why prosperity and reform hastened the Revolution.",
+      "extracted": "fr/fr-01.txt"
+    },
+    {
+      "id": "fr-03",
+      "lang": "fr",
+      "author": "Ernest Renan",
+      "title": "Qu'est-ce qu'une nation ?",
+      "year": 1882,
+      "topic": "politics",
+      "copyright": "PD",
+      "resolve": {
+        "type": "url",
+        "url": "https://mjp.univ-perp.fr/textes/renan1882.htm"
+      },
+      "excerpt_note": "The closing third: nation as spiritual principle and 'un plébiscite de tous les jours'.",
+      "extracted": "fr/fr-03.txt"
+    },
+    {
+      "id": "fr-04",
+      "lang": "fr",
+      "author": "Jules Ferry",
+      "title": "Discours sur la politique coloniale, 28 juillet 1885",
+      "year": 1885,
+      "topic": "politics/empire",
+      "copyright": "PD",
+      "resolve": {
+        "type": "wikisource_search",
+        "wiki": "fr",
+        "query": "Jules Ferry discours 28 juillet 1885 politique coloniale"
+      },
+      "excerpt_note": "The 'races supérieures' passage with Clemenceau's interruptions — excellent for rhetorical analysis.",
+      "extracted": "fr/fr-04.txt"
+    },
+    {
+      "id": "fr-05",
+      "lang": "fr",
+      "author": "Émile Durkheim",
+      "title": "Les règles de la méthode sociologique — ch. I",
+      "year": 1895,
+      "topic": "sociology",
+      "copyright": "PD",
+      "resolve": {
+        "type": "url",
+        "url": "http://classiques.uqac.ca/classiques/Durkheim_emile/regles_methode/regles_methode.html"
+      },
+      "excerpt_note": "The definition of the fait social.",
+      "extracted": "fr/fr-05.txt"
+    },
+    {
+      "id": "fr-06",
+      "lang": "fr",
+      "author": "Émile Zola",
+      "title": "J'accuse… ! (Lettre à M. Félix Faure)",
+      "year": 1898,
+      "topic": "politics/journalism",
+      "copyright": "PD",
+      "resolve": {
+        "type": "wikisource",
+        "wiki": "fr",
+        "title": "J’accuse… !"
+      },
+      "excerpt_note": "The final anaphoric section is the set piece; include enough preceding context to make it coherent.",
+      "extracted": "fr/fr-06.txt"
+    },
+    {
+      "id": "fr-07",
+      "lang": "fr",
+      "author": "Paul Valéry",
+      "title": "La crise de l'esprit — première lettre",
+      "year": 1919,
+      "topic": "culture/philosophy",
+      "copyright": "PD",
+      "resolve": {
+        "type": "wikisource_search",
+        "wiki": "fr",
+        "query": "Valéry La crise de l'esprit"
+      },
+      "excerpt_note": "Opens 'Nous autres, civilisations, nous savons maintenant que nous sommes mortelles.'",
+      "extracted": "fr/fr-07.txt"
+    },
+    {
+      "id": "fr-08",
+      "lang": "fr",
+      "author": "Marcel Mauss",
+      "title": "Essai sur le don — Introduction",
+      "year": 1925,
+      "topic": "anthropology/sociology",
+      "copyright": "PD",
+      "resolve": {
+        "type": "url",
+        "url": "http://classiques.uqac.ca/classiques/mauss_marcel/essai_sur_le_don/essai_sur_le_don.html"
+      },
+      "excerpt_note": "The programme: gift, obligation, reciprocity, fait social total.",
+      "extracted": "fr/fr-08.txt"
+    },
+    {
+      "id": "fr-09",
+      "lang": "fr",
+      "author": "Simone de Beauvoir",
+      "title": "Le Deuxième Sexe — Introduction",
+      "year": 1949,
+      "topic": "philosophy/sociology",
+      "copyright": "FD",
+      "resolve": {
+        "type": "supplied",
+        "url": "user-supplied PDF (Le Deuxième Sexe)"
+      },
+      "excerpt_note": "Opening of the introduction ('Qu'est-ce qu'une femme ?').",
+      "extracted": "fr/fr-09.txt"
+    },
+    {
+      "id": "it-01",
+      "lang": "it",
+      "author": "Carlo Cattaneo",
+      "title": "La città considerata come principio ideale delle istorie italiane",
+      "year": 1858,
+      "topic": "history/politics",
+      "copyright": "PD",
+      "resolve": {
+        "type": "wikisource_search",
+        "wiki": "it",
+        "query": "Cattaneo La città considerata come principio ideale delle istorie italiane"
+      },
+      "fallback_url": "https://www.liberliber.it",
+      "excerpt_note": "The opening argument that the city, not the state, is the constant of Italian history.",
+      "extracted": "it/it-01.txt"
+    },
+    {
+      "id": "it-02",
+      "lang": "it",
+      "author": "Giuseppe Mazzini",
+      "title": "I doveri dell'uomo — Doveri verso la Patria",
+      "year": 1860,
+      "topic": "politics/ethics",
+      "copyright": "PD",
+      "resolve": {
+        "type": "wikisource_search",
+        "wiki": "it",
+        "query": "Mazzini Dei doveri dell'uomo"
+      },
+      "excerpt_note": "The chapter on duties towards the Patria.",
+      "extracted": "it/it-02.txt"
+    },
+    {
+      "id": "it-03",
+      "lang": "it",
+      "author": "Camillo Benso di Cavour",
+      "title": "Discorso su Roma capitale, 25 marzo 1861",
+      "year": 1861,
+      "topic": "politics",
+      "copyright": "PD",
+      "resolve": {
+        "type": "wikisource_search",
+        "wiki": "it",
+        "query": "Cavour discorso Roma capitale 1861"
+      },
+      "excerpt_note": "Parliamentary oratory at the moment of unification.",
+      "extracted": "it/it-03.txt"
+    },
+    {
+      "id": "it-04",
+      "lang": "it",
+      "author": "Cesare Lombroso",
+      "title": "L'uomo delinquente — il delinquente nato",
+      "year": 1876,
+      "topic": "criminology/sociology",
+      "copyright": "PD",
+      "resolve": {
+        "type": "wikisource_search",
+        "wiki": "it",
+        "query": "Lombroso L'uomo delinquente"
+      },
+      "fallback_url": "https://archive.org/details/luomodelinquent00lombgoog",
+      "excerpt_note": "The atavism thesis. Historically enormous, scientifically discredited — good critical-reading material.",
+      "extracted": "it/it-04.txt"
+    },
+    {
+      "id": "it-05",
+      "lang": "it",
+      "author": "Gaetano Mosca",
+      "title": "Elementi di scienza politica — la classe politica",
+      "year": 1896,
+      "topic": "political science",
+      "copyright": "PD",
+      "resolve": {
+        "type": "wikisource_search",
+        "wiki": "it",
+        "query": "Mosca Elementi di scienza politica"
+      },
+      "fallback_url": "https://archive.org/details/elementidiscien00moscgoog",
+      "excerpt_note": "The founding statement of elite theory.",
+      "extracted": "it/it-05.txt"
+    },
+    {
+      "id": "it-06",
+      "lang": "it",
+      "author": "Vilfredo Pareto",
+      "title": "Manuale di economia politica — ofelimità ed equilibrio",
+      "year": 1906,
+      "topic": "economics",
+      "copyright": "PD",
+      "resolve": {
+        "type": "wikisource_search",
+        "wiki": "it",
+        "query": "Pareto Manuale di economia politica"
+      },
+      "fallback_url": "https://archive.org/details/manualedieconomi00pare",
+      "excerpt_note": "Choose a passage light on formal notation.",
+      "extracted": "it/it-06.txt"
+    },
+    {
+      "id": "it-07",
+      "lang": "it",
+      "author": "Filippo Tommaso Marinetti",
+      "title": "Fondazione e Manifesto del Futurismo",
+      "year": 1909,
+      "topic": "culture",
+      "copyright": "PD",
+      "resolve": {
+        "type": "wikisource",
+        "wiki": "it",
+        "title": "I Manifesti del futurismo/Fondazione e Manifesto del futurismo"
+      },
+      "excerpt_note": "Short enough to use nearly whole — the eleven points plus surrounding frame.",
+      "extracted": "it/it-07.txt"
+    },
+    {
+      "id": "it-08",
+      "lang": "it",
+      "author": "Benedetto Croce",
+      "title": "Manifesto degli intellettuali antifascisti",
+      "year": 1925,
+      "topic": "politics/culture",
+      "copyright": "PD",
+      "resolve": {
+        "type": "wikisource_search",
+        "wiki": "it",
+        "query": "Manifesto degli intellettuali antifascisti Croce"
+      },
+      "excerpt_note": "Roughly 1000 words as written — usable entire.",
+      "extracted": "it/it-08.txt"
+    },
+    {
+      "id": "it-09",
+      "lang": "it",
+      "author": "Antonio Gramsci",
+      "title": "Quaderni del carcere — Gli intellettuali",
+      "year": 1932,
+      "topic": "politics/culture",
+      "copyright": "PD",
+      "resolve": {
+        "type": "wikisource_search",
+        "wiki": "it",
+        "query": "Gramsci Quaderni del carcere intellettuali"
+      },
+      "fallback_url": "https://www.liberliber.it",
+      "excerpt_note": "The organic intellectual. Prison-notebook prose is compressed — keep a whole note as the unit.",
+      "extracted": "it/it-09.txt"
+    },
+    {
+      "id": "it-10",
+      "lang": "it",
+      "author": "Umberto Eco",
+      "title": "Il fascismo eterno",
+      "year": 1995,
+      "topic": "politics/culture",
+      "copyright": "FD",
+      "resolve": {
+        "type": "manual"
+      },
+      "excerpt_note": "The enumerated features of Ur-Fascism — a gift for teaching argumentative structure.",
+      "extracted": "it/it-10.txt"
+    },
+    {
+      "id": "zh-01",
+      "lang": "zh",
+      "author": "魏源 Wei Yuan",
+      "title": "海國圖志·籌海篇一（議守上）",
+      "year": 1852,
+      "topic": "politics/history",
+      "copyright": "PD",
+      "script": "traditional",
+      "register": "classical (文言文)",
+      "resolve": {
+        "type": "wikisource_search",
+        "wiki": "zh",
+        "query": "海國圖志 序 魏源"
+      },
+      "fallback_url": "https://ctext.org",
+      "excerpt_note": "Downloaded text is the 籌海篇, not the preface: on defending the inland waters rather than the open sea.",
+      "extracted": "zh/zh-01.txt"
+    },
+    {
+      "id": "zh-02",
+      "lang": "zh",
+      "author": "嚴復 Yan Fu",
+      "title": "論世變之亟",
+      "year": 1895,
+      "topic": "politics/philosophy",
+      "copyright": "PD",
+      "script": "traditional",
+      "register": "classical (文言文)",
+      "resolve": {
+        "type": "wikisource_search",
+        "wiki": "zh",
+        "query": "論世變之亟 嚴復"
+      },
+      "excerpt_note": "The contrast between Chinese and Western civilisation after the defeat by Japan.",
+      "extracted": "zh/zh-02.txt"
+    },
+    {
+      "id": "zh-03",
+      "lang": "zh",
+      "author": "梁啟超 Liang Qichao",
+      "title": "少年中國說",
+      "year": 1900,
+      "topic": "politics/culture",
+      "copyright": "PD",
+      "script": "traditional",
+      "register": "semi-classical (新文體)",
+      "resolve": {
+        "type": "wikisource",
+        "wiki": "zh",
+        "title": "少年中國說"
+      },
+      "excerpt_note": "Cadenced and famous; the parallel-prose passages are the point.",
+      "extracted": "zh/zh-03.txt"
+    },
+    {
+      "id": "zh-05",
+      "lang": "zh",
+      "author": "蔡元培 Cai Yuanpei",
+      "title": "就任北京大學校長之演說",
+      "year": 1917,
+      "topic": "education/culture",
+      "copyright": "PD",
+      "script": "traditional",
+      "register": "transitional",
+      "resolve": {
+        "type": "wikisource_search",
+        "wiki": "zh",
+        "query": "就任北京大學校長之演說 蔡元培"
+      },
+      "excerpt_note": "On the purpose of a university. Short, clear, thematically ideal for your students.",
+      "extracted": "zh/zh-05.txt"
+    },
+    {
+      "id": "zh-06",
+      "lang": "zh",
+      "author": "李大钊 Li Dazhao",
+      "title": "庶民的胜利",
+      "year": 1918,
+      "topic": "politics",
+      "copyright": "PD",
+      "script": "simplified",
+      "register": "vernacular (白话文)",
+      "resolve": {
+        "type": "wikisource_search",
+        "wiki": "zh",
+        "query": "庶民的勝利 李大釗"
+      },
+      "excerpt_note": "Delivered as a speech. Convert to simplified.",
+      "extracted": "zh/zh-06.txt"
+    },
+    {
+      "id": "zh-07",
+      "lang": "zh",
+      "author": "胡适 Hu Shi",
+      "title": "多研究些问题，少谈些“主义”",
+      "year": 1919,
+      "topic": "philosophy/politics",
+      "copyright": "PD (UK: life+50 via rule of the shorter term)",
+      "script": "simplified",
+      "register": "vernacular (白话文)",
+      "resolve": {
+        "type": "wikisource_search",
+        "wiki": "zh",
+        "query": "多研究些問題 少談些主義 胡適"
+      },
+      "excerpt_note": "Pragmatism against ideology. Clean baihua — among the easiest texts here.",
+      "extracted": "zh/zh-07.txt"
+    },
+    {
+      "id": "zh-08",
+      "lang": "zh",
+      "author": "孙中山 Sun Yat-sen",
+      "title": "三民主义·民族主义第一讲",
+      "year": 1924,
+      "topic": "politics",
+      "copyright": "PD",
+      "script": "simplified",
+      "register": "spoken vernacular",
+      "resolve": {
+        "type": "wikisource_search",
+        "wiki": "zh",
+        "query": "三民主義 民族主義 第一講 孫中山"
+      },
+      "excerpt_note": "Transcribed lectures — genuinely spoken register, the most accessible Chinese text in the set.",
+      "extracted": "zh/zh-08.txt"
+    },
+    {
+      "id": "zh-09",
+      "lang": "zh",
+      "author": "费孝通 Fei Xiaotong",
+      "title": "乡土中国·差序格局",
+      "year": 1948,
+      "topic": "sociology",
+      "copyright": "FD",
+      "script": "simplified",
+      "register": "vernacular",
+      "resolve": {
+        "type": "manual"
+      },
+      "excerpt_note": "The differential mode of association. Most-cited work of Chinese sociology; very readable.",
+      "extracted": "zh/zh-09.txt"
+    }
+  ]
+}
