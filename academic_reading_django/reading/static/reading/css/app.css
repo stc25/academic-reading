@@ -86,7 +86,6 @@ p { line-height: var(--leading-body); }
 .badge.warn { border-color: var(--status-warning-dark); color: var(--status-warning-dark); }
 
 .text-meta-row { display: flex; flex-wrap: wrap; align-items: center; }
-.reset-form { display: inline-block; margin: 0 0 var(--space-8) 0; }
 
 .level-reply-row {
   display: flex;
@@ -105,18 +104,6 @@ p { line-height: var(--leading-body); }
   background: var(--surface-secondary);
   color: var(--text-primary);
 }
-.btn-reset {
-  display: inline-block;
-  padding: 2px 10px;
-  border-radius: var(--radius-max);
-  font-size: 12px;
-  line-height: 20px;
-  border: 1px solid var(--status-danger-dark);
-  color: var(--status-danger-dark);
-  background: var(--surface-secondary);
-  cursor: pointer;
-}
-.btn-reset:hover { background: var(--status-danger-light); }
 
 /* --- Buttons --------------------------------------------------------------*/
 .btn {
