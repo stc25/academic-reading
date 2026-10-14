@@ -30,11 +30,6 @@
       <span class="badge">{{ level.label }}</span>
       {% if text.script %}<span class="badge{% if text.script == 'traditional' %} warn{% endif %}">{{ text.script }} 字</span>{% endif %}
       {% if session.uploaded %}<span class="badge">uploaded</span>{% endif %}
-      <form method="post" action="{% url 'reading:reset' pk=session.pk %}" class="reset-form"
-            onsubmit="return confirm('Reset this text? This deletes everything generated for it in this browser — questions, summaries, feedback, all of it.');">
-        {% csrf_token %}
-        <button type="submit" class="btn-reset" title="Delete everything generated for this text and start over">↺ Reset</button>
-      </form>
     </div>
 
     <div class="reading-pane{% if text.is_cjk %} cjk{% endif %}" style="margin-top: var(--space-16);">
