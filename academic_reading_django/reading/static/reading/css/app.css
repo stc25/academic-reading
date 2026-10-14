@@ -52,7 +52,7 @@ main:focus { outline: none; }
 
 /* Sticky translucent masthead (from lc-base-template), at every width. On phones
    it is compacted (see the max-width: 767px block) so pinning it costs little. */
-html { scroll-padding-top: 5rem; }
+html { scroll-padding-top: 8rem; }
 .masthead {
   position: sticky; top: 0; z-index: 40;
   background: color-mix(in srgb, var(--surface-inverse) 96%, transparent);
@@ -326,3 +326,24 @@ p { line-height: var(--leading-body); }
 @media (prefers-reduced-motion: reduce) {
   .activity-menu-btn svg { transition: none; }
 }
+
+/* --- Library search bar (home page) ---------------------------------------------
+   Same mint sticky band as the activity bar, at every width: a text search plus a
+   language filter, both applied client-side by library.js. */
+.library-bar {
+  position: sticky; top: var(--masthead-h, 4.25rem); z-index: 39;
+  background: var(--surface-brand);
+  border-bottom: 1px solid var(--divider-strong);
+}
+.library-bar[hidden] { display: none; }
+.library-bar .wrap { display: flex; gap: var(--space-12); align-items: center; padding-block: var(--space-8); }
+.library-bar input[type="search"] { flex: 1; min-width: 0; max-width: 28rem; }
+.library-bar input[type="search"], .library-bar select {
+  min-height: 2.5rem; padding: var(--space-4) var(--space-12);
+  border: 1px solid var(--button-secondary-border); border-radius: var(--radius-sm);
+  background: var(--surface-secondary); color: var(--text-primary); font: inherit; font-size: var(--text-size-2);
+}
+.library-bar select { max-width: 45%; }
+.library-bar input::placeholder { color: var(--text-secondary); opacity: 1; }
+.text-card[hidden], .lang-group[hidden] { display: none; }
+#library-empty { color: var(--text-secondary); }

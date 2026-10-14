@@ -1,6 +1,15 @@
 /* Dark-mode switch. The head script in base.html has already set data-theme. */
 (function () {
   var root = document.documentElement;
+  /* Publish the masthead's height as --masthead-h so sticky sub-bars sit beneath it. */
+  var head = document.querySelector('.masthead');
+  function setHeight() {
+    if (head) root.style.setProperty('--masthead-h', head.offsetHeight + 'px');
+  }
+  setHeight();
+  window.addEventListener('resize', setHeight);
+  if (head && window.ResizeObserver) new ResizeObserver(setHeight).observe(head);
+
   var sw = document.getElementById('theme-switch');
   if (!sw) return;
   function sync() { sw.setAttribute('aria-checked', root.getAttribute('data-theme') === 'dark' ? 'true' : 'false'); }
