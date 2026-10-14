@@ -62,19 +62,22 @@
   --link-hover:   #910839;
   --link-active:  #74062e;
 
-  --status-info-light:    #deeef8;  --status-info-dark:    #0082c3;
-  --status-success-light: #ddf4e2;  --status-success-dark: #12a131;
-  --status-warning-light: #faede0;  --status-warning-dark: #e67332;
+  --status-info-light:    #deeef8;  --status-info-dark:    #00629c;
+  --status-success-light: #ddf4e2;  --status-success-dark: #0b7a24;
+  --status-warning-light: #faede0;  --status-warning-dark: #a8460f;
   --status-danger-light:  #fae1e0;  --status-danger-dark:  #a72e28;
 
   --button-primary-bg:        #0f2125;
   --button-primary-hover:     #06333c;
   --button-primary-active:    #034553;
   --button-secondary-bg:      #ffffff;
-  --button-secondary-border:  rgba(3, 69, 83, 0.15);
-  --button-secondary-border-hover: rgba(3, 69, 83, 0.35);
+  --button-secondary-border:  #7e8683;
+  --button-secondary-border-hover: #5d6360;
 
-  --focus-ring: #6fcfcd;
+  --focus-ring: #0c7381;
+  --button-primary-text: #ffffff;
+  --button-disabled-bg:  #cbd2cf;
+  --anno: #aa0943;
 
   /* --- Typography (fallback stack — see file header) --------- */
   --font-display: Georgia, "Times New Roman", serif;
@@ -134,6 +137,49 @@
   --breakpoint-sm: 520px;
   --breakpoint-md: 768px;
   --breakpoint-lg: 1024px;
+}
+
+/* --- Dark theme ------------------------------------------------------------
+   Set by the head script in base.html (data-theme on <html>), which resolves a
+   saved choice or the OS preference before first paint. Every foreground/
+   background pair here is checked by scripts/check_contrast.py. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --text-primary:   #e8edec;
+  --text-secondary: rgba(232, 237, 236, 0.85);
+  --text-tertiary:  rgba(232, 237, 236, 0.75);
+  --text-inverse:   #ffffff;
+
+  --surface-default:   #0f2125;
+  --surface-brand:     #0c3a43;
+  --surface-secondary: #16302f;
+  --surface-tertiary:  #1f3d43;
+  --surface-inverse:   #06333c;
+
+  --divider-subtle: rgba(232, 237, 236, 0.16);
+  --divider-strong: rgba(232, 237, 236, 0.40);
+
+  --link-default: #e8edec;
+  --link-hover:   #f7c4d5;
+  --link-active:  #fce5ed;
+
+  --status-info-light:    #0b2a3a;  --status-info-dark:    #6cc3f5;
+  --status-success-light: #0f2e1a;  --status-success-dark: #5fd77d;
+  --status-warning-light: #3a2410;  --status-warning-dark: #f3a468;
+  --status-danger-light:  #3a1614;  --status-danger-dark:  #f5948e;
+
+  --button-primary-bg:    #92e2e1;
+  --button-primary-hover: #6fcfcd;
+  --button-primary-active:#6fcfcd;
+  --button-primary-text:  #0f2125;
+  --button-secondary-bg:  #16302f;
+  --button-secondary-border:       rgba(232, 237, 236, 0.55);
+  --button-secondary-border-hover: rgba(232, 237, 236, 0.80);
+  --button-disabled-bg:   #3c413f;
+
+  --anno: #e98aaa;
+  --focus-ring: #6fcfcd;
 }
 
 /* --- Responsive class hooks (from the design system) -------------------- */

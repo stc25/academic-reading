@@ -16,16 +16,19 @@ a:hover { color: var(--link-hover); text-decoration-color: currentColor; }
   outline-offset: 2px;
 }
 
+input, select, textarea { color: var(--text-primary); background: var(--surface-secondary); }
 .wrap { max-width: var(--container-max); margin: 0 auto; padding: 0 var(--space-24); }
 
 /* --- Masthead ------------------------------------------------------------ */
 .masthead {
+  border-bottom: 1px solid var(--divider-subtle);
   background: var(--surface-inverse);
   color: var(--text-inverse);
   padding: var(--space-16) 0;
 }
 .masthead nav a[aria-current="page"] { opacity: 1; text-decoration: underline; text-decoration-color: currentColor; text-underline-offset: 6px; }
 .masthead .wrap { display: flex; align-items: center; justify-content: space-between; gap: var(--space-16); }
+.masthead :focus-visible { outline-color: var(--colour-blue-200); }
 .masthead a { color: var(--text-inverse); text-decoration: none; }
 .masthead .brand { font-family: var(--font-display); font-size: var(--text-size-5); }
 .masthead nav { display: flex; gap: var(--space-24); font-size: var(--text-size-1); }
@@ -110,9 +113,9 @@ p { line-height: var(--leading-body); }
   cursor: pointer;
   transition: background var(--duration-fast) var(--ease-standard);
 }
-.btn-primary { background: var(--button-primary-bg); color: var(--text-inverse); }
+.btn-primary { background: var(--button-primary-bg); color: var(--button-primary-text); }
 .btn-primary:hover { background: var(--button-primary-hover); }
-.btn-primary:disabled { background: var(--colour-neutral-400); cursor: not-allowed; }
+.btn-primary:disabled { background: var(--button-disabled-bg); cursor: not-allowed; }
 .btn-secondary { background: var(--button-secondary-bg); color: var(--text-primary); border-color: var(--button-secondary-border); }
 .btn-secondary:hover { border-color: var(--button-secondary-border-hover); }
 .btn-block { width: 100%; }
@@ -173,10 +176,10 @@ p { line-height: var(--leading-body); }
 .reading-body { font-family: var(--font-reading); font-size: 17px; line-height: 1.75; }
 .reading-body.cjk { font-size: 20px; line-height: 2.0; }
 .reading-body p { margin: 0 0 1.05em 0; }
-.reading-body .anno { border-bottom: 1px dashed var(--colour-cherry-500); }
+.reading-body .anno { border-bottom: 1px dashed var(--anno); }
 .reading-body .anno-num {
   font-size: 0.68em; font-weight: 700; padding-left: 1px;
-  color: var(--colour-cherry-500); vertical-align: super; line-height: 0;
+  color: var(--anno); vertical-align: super; line-height: 0;
 }
 
 /* --- Activity nav -----------------------------------------------------------*/
@@ -245,4 +248,26 @@ p { line-height: var(--leading-body); }
 
 @media (prefers-reduced-motion: reduce) {
   .skip-link, .btn, .text-card { transition: none; }
+}
+
+/* --- Theme switch (sun · switch · moon), after lc-base-template's ThemeToggle ---
+   The masthead is dark teal in both themes, so the switch is drawn for that ground:
+   a white outlined track, filled mint when dark mode is on. */
+.theme-toggle { display: inline-flex; align-items: center; gap: var(--space-8); color: var(--text-inverse); }
+.theme-toggle svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.theme-switch {
+  position: relative; width: 40px; height: 24px; padding: 0; cursor: pointer;
+  border: 2px solid var(--text-inverse); border-radius: var(--radius-max);
+  background: transparent;
+  transition: background var(--duration-fast) var(--ease-standard);
+}
+.theme-switch::after {
+  content: ''; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px;
+  border-radius: 50%; background: var(--text-inverse);
+  transition: transform var(--duration-fast) var(--ease-standard), background var(--duration-fast) var(--ease-standard);
+}
+.theme-switch[aria-checked="true"] { background: var(--colour-blue-200); }
+.theme-switch[aria-checked="true"]::after { transform: translateX(16px); background: var(--colour-blue-900); }
+@media (prefers-reduced-motion: reduce) {
+  .theme-switch, .theme-switch::after { transition: none; }
 }
