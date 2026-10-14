@@ -1,7 +1,7 @@
 /* Activity menu (phones/tablets). Opens the panel in the sticky bar under the
    masthead; closes on Escape (returning focus to the button), outside click, or
    choosing an activity (a normal page navigation). Also publishes the masthead's
-   height as --masthead-h so the bar can stick directly beneath it at >= 768px. */
+   height as --masthead-h so the bar can stick directly beneath it. */
 (function () {
   var bar = document.getElementById('activity-bar');
   if (!bar) return;
@@ -14,6 +14,7 @@
   }
   setHeight();
   window.addEventListener('resize', setHeight);
+  if (head && window.ResizeObserver) new ResizeObserver(setHeight).observe(head);
 
   function set(open, returnFocus) {
     btn.setAttribute('aria-expanded', open ? 'true' : 'false');
