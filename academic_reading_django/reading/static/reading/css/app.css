@@ -309,3 +309,48 @@ p { line-height: var(--leading-body); }
 @media (prefers-reduced-motion: reduce) {
   .back-to-top, .back-to-top.is-visible { transition: none; transform: none; }
 }
+
+/* --- Activity menu: phones and tablets only ------------------------------------
+   Below 1024px the activity list sits under the whole text. This bar sticks under
+   the masthead and opens a panel with every activity, so a reader can switch
+   without scrolling. keep-position.js already lands them back in the work area. */
+.activity-bar { display: none; }
+@media (max-width: 1023px) {
+  html { scroll-padding-top: 8rem; }
+  .activity-bar {
+    display: block; position: sticky; top: 0; z-index: 39;
+    background: var(--surface-secondary);
+    border-bottom: 1px solid var(--divider-strong);
+  }
+  .activity-menu-btn {
+    display: flex; align-items: center; justify-content: space-between; gap: var(--space-12);
+    width: 100%; min-height: 3rem; padding: var(--space-8) var(--space-24);
+    border: 0; background: transparent; color: var(--text-primary);
+    font: inherit; font-size: var(--text-size-1); text-align: left; cursor: pointer;
+  }
+  .activity-menu-label { font-weight: var(--font-weight-semibold); }
+  .activity-menu-current { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-secondary); }
+  .activity-menu-btn svg { flex: none; width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; transition: transform var(--duration-fast) var(--ease-standard); }
+  .activity-menu-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
+  .activity-menu-panel {
+    position: absolute; top: 100%; left: 0; right: 0;
+    max-height: calc(100vh - 12rem); overflow-y: auto;
+    background: var(--surface-secondary);
+    border-bottom: 1px solid var(--divider-strong);
+    box-shadow: var(--shadow-lg);
+  }
+  .activity-menu-panel[hidden] { display: none; }
+  .activity-menu-panel ul { margin: 0; padding: var(--space-8) 0; list-style: none; }
+  .activity-menu-panel a {
+    display: block; min-height: 2.75rem; padding: var(--space-12) var(--space-24);
+    color: var(--text-primary); text-decoration: none; font-size: var(--text-size-2);
+  }
+  .activity-menu-panel a:hover { background: var(--surface-tertiary); }
+  .activity-menu-panel a[aria-current="page"] { background: var(--surface-inverse); color: var(--text-inverse); font-weight: var(--font-weight-semibold); }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .activity-bar { top: var(--masthead-h, 4.25rem); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .activity-menu-btn svg { transition: none; }
+}

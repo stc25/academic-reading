@@ -36,6 +36,7 @@
       </nav>
     </div>
   </header>
+  {% block subheader %}{% endblock %}
   <main id="content" tabindex="-1">
     <div class="wrap">
       {% if messages %}
@@ -52,6 +53,7 @@
   </button>
   <script src="{% static 'reading/js/theme.js' %}"></script>
   <script src="{% static 'reading/js/back-to-top.js' %}"></script>
+  <script src="{% static 'reading/js/activity-menu.js' %}"></script>
   {% block extra_scripts %}{% endblock %}
 </body>
 </html>
