@@ -336,7 +336,7 @@ p { line-height: var(--leading-body); }
   border-bottom: 1px solid var(--divider-strong);
 }
 .library-bar[hidden] { display: none; }
-.library-bar .wrap { display: flex; gap: var(--space-12); align-items: center; padding-block: var(--space-8); }
+.library-bar .wrap { display: flex; justify-content: flex-end; gap: var(--space-12); align-items: center; padding-block: var(--space-8); }
 .library-bar input[type="search"] { flex: 1; min-width: 0; max-width: 28rem; }
 .library-bar input[type="search"], .library-bar select {
   min-height: 2.5rem; padding: var(--space-4) var(--space-12);
