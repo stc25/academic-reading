@@ -30,6 +30,8 @@ input, select, textarea { color: var(--text-primary); background: var(--surface-
 .masthead .wrap { display: flex; align-items: center; justify-content: space-between; gap: var(--space-16); }
 .masthead :focus-visible { outline-color: var(--colour-blue-200); }
 .masthead a { color: var(--text-inverse); text-decoration: none; }
+.masthead .brand { display: inline-flex; align-items: center; gap: var(--space-8); }
+.brand-logo { display: block; width: 2rem; height: 2rem; }
 .masthead .brand { font-family: var(--font-display); font-size: var(--text-size-5); }
 .masthead nav { display: flex; gap: var(--space-24); font-size: var(--text-size-1); }
 .masthead nav a { opacity: 0.85; }
