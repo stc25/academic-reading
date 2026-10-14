@@ -1,0 +1,11 @@
+Django>=5.0,<5.2
+gunicorn
+whitenoise
+PyMySQL
+python-dotenv
+PyYAML
+ollama
+langdetect
+hanzidentifier
+markdown
+bleach

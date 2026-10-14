@@ -1,0 +1,30 @@
+{% extends "reading/base.html" %}
+{% block title %}History{% endblock %}
+{% block content %}
+
+<h1>History</h1>
+<p class="callout">Everything generated in this browser. Nothing here is
+  tied to an account — it's scoped to this browser's session only.</p>
+
+{% if not sessions_data %}
+  <p>Nothing yet — <a href="{% url 'reading:home' %}">open a text</a> to get started.</p>
+{% else %}
+  {% for entry in sessions_data %}
+    <div class="history-item">
+      <h3><a href="{% url 'reading:read' pk=entry.session.pk %}">{{ entry.session.title }}</a></h3>
+      <div class="attempts">
+        {{ entry.session.language_name }}{% if entry.session.uploaded %} · uploaded{% endif %}
+        · opened {{ entry.session.created_at|date:"j M Y, H:i" }}
+      </div>
+      {% if entry.activities %}
+        <div class="attempts">
+          {% for a in entry.activities %}
+            {{ a.label }} ({{ a.count }} attempt{{ a.count|pluralize }}){% if not forloop.last %} · {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  {% endfor %}
+{% endif %}
+
+{% endblock %}

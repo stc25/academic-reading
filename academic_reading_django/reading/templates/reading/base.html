@@ -1,0 +1,36 @@
+{% load static %}<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Academic Reading{% endblock %} — Cambridge Language Centre</title>
+  <link rel="stylesheet" href="{% static 'reading/css/tokens.css' %}">
+  <link rel="stylesheet" href="{% static 'reading/css/app.css' %}">
+  <link rel="stylesheet" href="{% static 'reading/css/footer.css' %}">
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to main content</a>
+  <header class="masthead">
+    <div class="wrap">
+      <a class="brand" href="{% url 'reading:home' %}">📖 Academic Reading</a>
+      <nav aria-label="Main">
+        <a href="{% url 'reading:home' %}"{% if request.resolver_match.url_name != 'history' %} aria-current="page"{% endif %}>Library</a>
+        <a href="{% url 'reading:history' %}"{% if request.resolver_match.url_name == 'history' %} aria-current="page"{% endif %}>History</a>
+      </nav>
+    </div>
+  </header>
+  <main id="content" tabindex="-1">
+    <div class="wrap">
+      {% if messages %}
+        {% for message in messages %}
+          <div class="callout {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+      {% block content %}{% endblock %}
+    </div>
+  </main>
+  {% include 'reading/_footer.html' %}
+  {% block extra_scripts %}{% endblock %}
+</body>
+</html>
