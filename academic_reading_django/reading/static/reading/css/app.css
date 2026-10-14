@@ -50,19 +50,17 @@ main:focus { outline: none; }
 }
 .skip-link:focus-visible { transform: translateY(0); color: var(--text-inverse); }
 
-/* Sticky translucent masthead (from lc-base-template), tablet and up only: the
-   stacked phone masthead is too tall to pin. */
+/* Sticky translucent masthead (from lc-base-template), at every width. On phones
+   it is compacted (see the max-width: 767px block) so pinning it costs little. */
 html { scroll-padding-top: 5rem; }
-@media (min-width: 768px) {
+.masthead {
+  position: sticky; top: 0; z-index: 40;
+  background: color-mix(in srgb, var(--surface-inverse) 96%, transparent);
+}
+@supports (backdrop-filter: blur(1px)) {
   .masthead {
-    position: sticky; top: 0; z-index: 40;
-    background: color-mix(in srgb, var(--surface-inverse) 96%, transparent);
-  }
-  @supports (backdrop-filter: blur(1px)) {
-    .masthead {
-      background: color-mix(in srgb, var(--surface-inverse) 88%, transparent);
-      backdrop-filter: blur(8px);
-    }
+    background: color-mix(in srgb, var(--surface-inverse) 88%, transparent);
+    backdrop-filter: blur(8px);
   }
 }
 
@@ -243,7 +241,12 @@ p { line-height: var(--leading-body); }
   .reading-pane { max-height: none; }
 }
 @media (max-width: 767px) {
-  .masthead .wrap { flex-direction: column; align-items: flex-start; }
+  /* Compact one-row (wrapping) masthead so it can stay pinned on a phone. */
+  .masthead { padding: var(--space-8) 0; }
+  .masthead .wrap { flex-wrap: wrap; gap: var(--space-4) var(--space-16); }
+  .masthead .brand { font-size: var(--text-size-3); }
+  .masthead nav { gap: var(--space-16); align-items: center; }
+  .masthead nav a { padding: var(--space-8) 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -298,10 +301,12 @@ p { line-height: var(--leading-body); }
    without scrolling. keep-position.js already lands them back in the work area. */
 .activity-bar { display: none; }
 @media (max-width: 1023px) {
-  html { scroll-padding-top: 8rem; }
+  html { scroll-padding-top: 9rem; }
   .activity-bar {
-    display: block; position: sticky; top: 0; z-index: 39;
-    background: var(--surface-secondary);
+    display: block; position: sticky; top: var(--masthead-h, 4.25rem); z-index: 39;
+    /* Mint band (the footer/callout colour): distinct from the dark masthead above,
+       the page ground and the white cards beneath. */
+    background: var(--surface-brand);
     border-bottom: 1px solid var(--divider-strong);
   }
   .activity-menu-btn {
@@ -312,6 +317,7 @@ p { line-height: var(--leading-body); }
   }
   .activity-menu-label { font-weight: var(--font-weight-semibold); }
   .activity-menu-current { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-secondary); }
+  .activity-menu-btn:hover { background: color-mix(in srgb, var(--surface-brand) 85%, var(--text-primary)); }
   .activity-menu-btn svg { flex: none; width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; transition: transform var(--duration-fast) var(--ease-standard); }
   .activity-menu-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
   .activity-menu-panel {
@@ -329,9 +335,6 @@ p { line-height: var(--leading-body); }
   }
   .activity-menu-panel a:hover { background: var(--surface-tertiary); }
   .activity-menu-panel a[aria-current="page"] { background: var(--surface-inverse); color: var(--text-inverse); font-weight: var(--font-weight-semibold); }
-}
-@media (min-width: 768px) and (max-width: 1023px) {
-  .activity-bar { top: var(--masthead-h, 4.25rem); }
 }
 @media (prefers-reduced-motion: reduce) {
   .activity-menu-btn svg { transition: none; }
