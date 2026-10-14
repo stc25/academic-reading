@@ -1,6 +1,22 @@
 {% extends "reading/base.html" %}
 {% load static reading_extras %}
 {% block title %}{{ session.title }} — {{ activity.label }}{% endblock %}
+{% block subheader %}
+<div class="activity-bar" id="activity-bar">
+  <button type="button" class="activity-menu-btn" aria-expanded="false" aria-controls="activity-menu-panel">
+    <span class="activity-menu-label">Activities</span>
+    <span class="activity-menu-current">{{ activity.display }}</span>
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6"/></svg>
+  </button>
+  <div class="activity-menu-panel" id="activity-menu-panel" hidden>
+    <ul>
+      {% for a in activities %}
+        <li><a href="{% url 'reading:activity' pk=session.pk activity_id=a.id %}"{% if a.id == activity.id %} aria-current="page"{% endif %}>{{ a.display }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endblock %}
 {% block content %}
 
 <div class="pageview cam-split-lg">

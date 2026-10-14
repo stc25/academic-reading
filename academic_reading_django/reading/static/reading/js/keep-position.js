@@ -20,7 +20,7 @@
   window.keepWorkInView = arm; // generate.js calls this just before it reloads
 
   document.addEventListener("click", function (event) {
-    if (event.target.closest && event.target.closest(".activity-nav a")) arm();
+    if (event.target.closest && event.target.closest(".activity-nav a, .activity-menu-panel a")) arm();
   });
   document.addEventListener("change", function (event) {
     if (event.target.closest && event.target.closest(".level-reply-row")) arm();
