@@ -1,5 +1,17 @@
 {% extends "reading/base.html" %}
+{% load static %}
 {% block title %}Library{% endblock %}
+{% block subheader %}
+<div class="library-bar" id="library-bar" role="search" hidden>
+  <div class="wrap">
+    <label class="sr-only" for="library-search">Search the library by title, author, topic or language</label>
+    <input type="search" id="library-search" placeholder="Search texts…" autocomplete="off">
+    <label class="sr-only" for="library-language">Filter by language</label>
+    <select id="library-language"><option value="">All languages</option></select>
+    <span id="library-status" class="sr-only" role="status" aria-live="polite"></span>
+  </div>
+</div>
+{% endblock %}
 {% block content %}
 
 <h1>Academic Reading</h1>
@@ -41,7 +53,8 @@
   <button type="submit" class="btn btn-primary">Upload</button>
 </form>
 
-<h2 style="margin-top: var(--space-40);">Library</h2>
+<h2 id="library" style="margin-top: var(--space-40);">Library</h2>
+<p id="library-empty" hidden>No texts match your search.</p>
 {% if not groups %}
   <p>No texts found in the library.</p>
 {% else %}
@@ -65,4 +78,5 @@
   {% endfor %}
 {% endif %}
 
+<script src="{% static 'reading/js/library.js' %}"></script>
 {% endblock %}
