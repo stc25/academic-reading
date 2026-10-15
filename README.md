@@ -149,7 +149,8 @@ the original `Host` header.
 docker compose --profile caddy up -d
 ```
 
-Uses `Caddyfile` with `DOMAIN` defaulting to `lcapps.langcen.cam.ac.uk`. Caddy gets a
+The site address in `Caddyfile` is fixed to `lcapps.langcen.cam.ac.uk` (it does not depend on the
+server's own hostname or any environment variable), serving `/academic-reading/` and `/academic-reading-eng/`. Caddy gets a
 Let's Encrypt certificate automatically — that needs the host reachable from the internet
 on 80/443. If the University issues certificates instead, add `tls /path/cert.pem /path/key.pem`
 inside the site block and mount the files.

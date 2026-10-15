@@ -1,4 +1,4 @@
-{$DOMAIN} {
+lcapps.langcen.cam.ac.uk {
     encode gzip
 
     redir /academic-reading-eng /academic-reading-eng/ 308
