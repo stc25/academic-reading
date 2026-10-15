@@ -253,7 +253,7 @@ Final URLs: `https://<hostname>/academic-reading/` and
 | `DJANGO_DEBUG` | `false` in production. |
 | `DJANGO_ALLOWED_HOSTS` | Must include the public hostname — **a wrong value gives HTTP 400.** Set it to your `<hostname>`. |
 | `DJANGO_CSRF_TRUSTED_ORIGINS` | `https://<hostname>`. Wrong value → form posts fail with 403. |
-| `MARIADB_USER`, `MARIADB_PASSWORD`, `MARIADB_ROOT_PASSWORD` | Read by both the app and the MariaDB container. The user name can be anything; use the same name in `DATABASE_URL`. |
+| `MARIADB_USER`, `MARIADB_PASSWORD`, `MARIADB_ROOT_PASSWORD` | Read by both the app and the MariaDB container. The user name can be anything (the examples use `academic_reading` for v1 and `academic_reading_eng` for v2); use the same name in `DATABASE_URL`. |
 | `DATABASE_URL` | `mysql://user:pass@<db service name>:3306/<db>`. Service names are fixed in `docker-compose.yml`. |
 | `OLLAMA_API_KEY` | Ollama Cloud key. |
 
