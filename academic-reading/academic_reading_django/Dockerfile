@@ -10,6 +10,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY manage.py .
 COPY academic_reading_django/ ./academic_reading_django/
 COPY reading/ ./reading/
+COPY accounts/ ./accounts/
 COPY config.yaml prompts.yaml ./
 COPY texts/ ./texts/
 COPY docker/entrypoint.sh /app/docker/entrypoint.sh

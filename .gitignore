@@ -12,3 +12,5 @@ __pycache__/
 staticfiles/
 *.sqlite3
 *Zone.Identifier
+# file-backed email outbox (dev / dormant email login)
+sent_emails/

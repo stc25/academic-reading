@@ -3,7 +3,7 @@
 A reading-skills tutor for learners of **German, French, Italian and Chinese**.
 Pick an authentic academic or literary text, then work through ten guided activities
 before, during and after reading it. The tutor is an LLM (Ollama Cloud) that is
-prompted per activity; there is no login.
+prompted per activity; sign-in is optional and off by default (see below).
 
 Live path: `/academic-reading/`. Sibling app: [`academic-reading-eng`](../academic-reading-eng/)
 (v2, any language, English throughout).
@@ -46,7 +46,11 @@ Live path: `/academic-reading/`. Sibling app: [`academic-reading-eng`](../academ
 - **History** page listing every text the reader has worked on, with the activities tried and attempt counts; **Reset**
   clears one text's history.
 - Light and dark theme (follows the OS, remembered per browser).
-- No account: a browser cookie (`are_sessionid`, one year) keeps a reader's work between visits.
+- **Anonymous by default:** a browser cookie (`arm_sessionid`, one year) keeps a reader's work between visits.
+- **Optional sign-in (off by default):** with `AUTH_REQUIRED=true` readers must sign in with University Microsoft
+  (Entra ID) SSO, restricted to an admin-managed allowlist, or with an admin-created email + password account for
+  people outside Cambridge. History then belongs to the account and follows it across devices. Admin site at
+  `/django-admin/`. Setup and switch-over runbook: [`docs/LOGIN.md`](../docs/LOGIN.md).
 
 ## Behaviour worth knowing
 
@@ -96,6 +100,7 @@ python manage.py test              # reply-cache tests
 
 ```
 academic_reading_django/
+  accounts/           sign-in: allowlist model, SSO pipeline, login views, auth gate, admin
   reading/            views, models (ReadingSession, ActivityTurn, CachedReply), templates, static
   reading/logic/      prompts, LLM client, corpus loading, annotations
   texts/              bundled library

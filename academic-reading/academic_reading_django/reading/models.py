@@ -9,6 +9,7 @@ live on `ActivityTurn` rather than `ReadingSession`.
 
 from __future__ import annotations
 
+from django.conf import settings
 from django.db import models
 
 from .logic.corpus import LANG_NAMES
@@ -23,6 +24,14 @@ class ReadingSession(models.Model):
     """
 
     session_key = models.CharField(max_length=40, db_index=True)
+    # Set only while AUTH_REQUIRED is on; anonymous rows keep user=None.
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name="reading_sessions",
+    )
     source_ref = models.CharField(max_length=300)
     title = models.CharField(max_length=300)
     author = models.CharField(max_length=300, blank=True)
