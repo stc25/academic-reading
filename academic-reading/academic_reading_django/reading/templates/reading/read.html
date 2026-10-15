@@ -1,0 +1,133 @@
+{% extends "reading/base.html" %}
+{% load static reading_extras %}
+{% block title %}{{ session.title }} — {{ activity.label }}{% endblock %}
+{% block subheader %}
+<div class="activity-bar" id="activity-bar">
+  <button type="button" class="activity-menu-btn" aria-expanded="false" aria-controls="activity-menu-panel">
+    <span class="activity-menu-label">Activities</span>
+    <span class="activity-menu-current">{{ activity.display }}</span>
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6"/></svg>
+  </button>
+  <div class="activity-menu-panel" id="activity-menu-panel" hidden>
+    <ul>
+      {% for a in activities %}
+        <li><a href="{% url 'reading:activity' pk=session.pk activity_id=a.id %}?{{ query }}"{% if a.id == activity.id %} aria-current="page"{% endif %}>{{ a.display }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endblock %}
+{% block content %}
+
+<div class="pageview cam-split-lg">
+  <div>
+    <h1>{{ session.title }}</h1>
+    {% if session.author %}
+      <p class="callout" style="background:none;padding:0;margin:0 0 var(--space-12);color:var(--text-secondary);">
+        {{ session.author }}{% if session.year %} · {{ session.year }}{% endif %}
+      </p>
+    {% endif %}
+
+    <div class="text-meta-row">
+      <span class="badge">{{ text.language_name }}</span>
+      <span class="badge">{{ text.length }} {{ text.length_unit }}</span>
+      {% if session.topic %}<span class="badge">{{ session.topic }}</span>{% endif %}
+      {% if session.copyright == "PD" %}<span class="badge">public domain</span>{% elif session.copyright %}<span class="badge">excerpt — fair dealing</span>{% endif %}
+      {% if text.is_cjk and session.script %}<span class="badge{% if session.script == 'traditional' %} warn{% endif %}">{{ session.script }} 字</span>{% endif %}
+      {% if session.register %}<span class="badge{% if 'classical' in session.register %} warn{% endif %}">{{ session.register }}</span>{% endif %}
+      {% if session.uploaded %}<span class="badge">uploaded</span>{% endif %}
+    </div>
+
+    {% if text.is_cjk and session.script == "traditional" %}
+      <p class="callout warn">Traditional characters, and the language is classical or
+        transitional rather than modern vernacular — a harder read than the simplified texts.</p>
+    {% endif %}
+
+    <div class="reading-pane{% if text.is_cjk %} cjk{% endif %}" style="margin-top: var(--space-16);">
+      <div class="reading-body{% if text.is_cjk %} cjk{% endif %}">{{ body_html }}</div>
+    </div>
+
+    {% if notes %}
+      <p class="draft-meta">{{ placed_count }} passage{{ placed_count|pluralize }} marked — the numbered comments are on the right.</p>
+    {% elif session.excerpt %}
+      <p class="draft-meta">Excerpt: {{ session.excerpt }}</p>
+    {% endif %}
+  </div>
+
+  <div>
+    <nav class="activity-nav">
+      {% for a in activities %}
+        <a href="{% url 'reading:activity' pk=session.pk activity_id=a.id %}?{{ query }}"{% if a.id == activity.id %} class="active"{% endif %}>{{ a.display }}</a>
+      {% endfor %}
+    </nav>
+
+    <div class="work-pane">
+      <h2>{{ activity.label }}</h2>
+      <p class="desc">{{ activity.description }}</p>
+
+      <form method="get" action="{% url 'reading:activity' pk=session.pk activity_id=activity.id %}" class="level-reply-row">
+        <label>Your level
+          <select name="level" onchange="this.form.submit()">
+            {% for lv in levels %}
+              <option value="{{ lv.id }}"{% if lv.id == level.id %} selected{% endif %}>{{ lv.display }}</option>
+            {% endfor %}
+          </select>
+        </label>
+        <label>Reply in
+          <select name="reply" onchange="this.form.submit()">
+            {% for choice in reply_choices %}
+              <option value="{{ choice }}"{% if choice == reply_language %} selected{% endif %}>{{ choice }}</option>
+            {% endfor %}
+          </select>
+        </label>
+      </form>
+
+      {% if "user" in turns and not opening %}
+        <button id="generate-btn" type="button" class="btn btn-primary btn-block"
+                data-url="{% url 'reading:generate' pk=session.pk activity_id=activity.id %}?{{ query }}">
+          {% if "feedback" in turns %}Generate questions{% else %}Generate{% endif %}
+        </button>
+      {% endif %}
+
+      <div id="live-output" class="model-output" style="white-space: pre-wrap; margin-top: var(--space-16);" hidden></div>
+      <p id="streaming-indicator" class="streaming-indicator">Generating…</p>
+
+      <div id="result" style="margin-top: var(--space-16);">
+        {% if notes %}
+          <div class="model-output">{{ notes_html }}</div>
+        {% elif feedback %}
+          <p class="draft-meta">Your writing:</p>
+          <blockquote class="model-output">{{ feedback.draft|linebreaks }}</blockquote>
+          <div class="model-output">{{ feedback.content|markdownify }}</div>
+        {% elif opening %}
+          <div class="model-output">{{ opening.content|markdownify }}</div>
+        {% elif brief %}
+          <div class="model-output">{{ brief|markdownify }}</div>
+        {% elif turns %}
+          <p class="draft-meta">Ready — <strong>{{ level.label }}</strong> level, replying in <strong>{{ reply_language }}</strong>.</p>
+        {% else %}
+          <p class="draft-meta">This activity is not wired up yet.</p>
+        {% endif %}
+      </div>
+
+      {% if has_box %}
+        <form id="draft-form" class="draft-form" method="post"
+              action="{% url 'reading:submit' pk=session.pk activity_id=activity.id %}?{{ query }}"
+              data-url="{% url 'reading:submit' pk=session.pk activity_id=activity.id %}?{{ query }}"
+              style="margin-top: var(--space-24);">
+          {% csrf_token %}
+          <label for="draft">Your writing</label>
+          <textarea id="draft" name="draft" placeholder="Write here — ⌘⏎ (Ctrl+Enter) to send.">{% if feedback %}{{ feedback.draft }}{% endif %}</textarea>
+          <button type="submit" class="btn btn-primary" style="margin-top: var(--space-12);">{{ activity.submit_label }}</button>
+        </form>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'reading/js/keep-position.js' %}"></script>
+<script src="{% static 'reading/js/generate.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,154 @@
+# Academic-Reading (Django) — configuration
+# Edit this file to change model routing, levels and activities.
+# Nothing here requires the app to be rebuilt; it is re-read on every request.
+
+# ---------------------------------------------------------------------------
+# Model routing
+# ---------------------------------------------------------------------------
+# Ollama Cloud only — there is no local backend in the Django build. Each
+# language maps to a model, with "fallback" for anything unmapped.
+models:
+  # Checked against your Ollama Cloud account on 2026-08-15. Only these four
+  # models are on the free tier — mistral-large-3, qwen3.5:397b, deepseek,
+  # glm, kimi and minimax all return 403 "requires a subscription".
+  # gemma4 is fast and good on the European languages; gpt-oss is slower but
+  # gets classical-Chinese pinyin right, where gemma4 does not.
+  cloud:
+    de: gemma4:31b
+    fr: gemma4:31b
+    it: gemma4:31b
+    zh: gpt-oss:120b
+    fallback: gemma4:31b
+
+  options:
+    temperature: 0.3
+    num_ctx: 8192
+
+# ---------------------------------------------------------------------------
+# Proficiency levels (self-declared)
+# ---------------------------------------------------------------------------
+levels:
+  - id: post_beginner
+    label: Post-Beginner
+    cefr: A2/B1
+  - id: intermediate
+    label: Intermediate
+    cefr: B2
+  - id: advanced
+    label: Advanced
+    cefr: C1
+
+# ---------------------------------------------------------------------------
+# Activities
+# ---------------------------------------------------------------------------
+# response_language: default only — the learner can toggle it per activity.
+#   en     = English
+#   target = the language of the text
+# interactive: the learner writes something and the model responds to it.
+# stance:      before = the student has not read the text yet; after = they have.
+# spoilers:    false = the model must not give the content away (pre-reading, and
+#              question sets, which must not answer themselves). true = the
+#              content is the point of the activity and is discussed openly.
+# submit_label: the button under the box the student writes in.
+# render:      pane (default) = the model's answer goes in the working pane;
+#              annotated = it is anchored into the reading text instead.
+activities:
+  - id: pre_reading
+    number: 1
+    label: Pre-reading
+    description: Vocabulary, structure and background to prepare you for the text.
+    response_language: en
+    interactive: false
+    stance: before
+    spoilers: false
+  - id: summative_comprehension
+    number: 2
+    label: Summative comprehension
+    description: Questions about the text as a whole — key ideas, argument, outline.
+    response_language: target
+    interactive: true
+    stance: after
+    spoilers: false
+    submit_label: Check my answers
+  - id: detailed_comprehension
+    number: 3
+    label: Detailed comprehension
+    description: Questions about specific details, answerable by close reading.
+    response_language: target
+    interactive: true
+    stance: after
+    spoilers: false
+    submit_label: Check my answers
+  - id: passive_summary
+    number: 4
+    label: Passive summary
+    description: A concise summary of the text, pitched at your level.
+    response_language: target
+    interactive: false
+    stance: after
+    spoilers: true
+  - id: active_summary
+    number: 5
+    label: Active summary
+    description: You write the summary; the app comments on its accuracy.
+    response_language: target
+    interactive: true
+    stance: after
+    spoilers: true
+    submit_label: Comment on my summary
+  - id: notes
+    number: 6
+    label: Notes
+    description: You write bullet-point notes; the app comments on them.
+    response_language: target
+    interactive: true
+    stance: after
+    spoilers: true
+    submit_label: Comment on my notes
+  - id: structure
+    number: 7
+    label: Structure
+    description: How the text is built — narrative or argumentative, with rhetorical means.
+    response_language: en
+    interactive: false
+    stance: after
+    spoilers: true
+  - id: style
+    number: 8
+    label: Stylistic observation
+    description: Style, genre conventions and contrasts with typical English writing.
+    response_language: en
+    interactive: false
+    stance: after
+    spoilers: true
+  - id: close_commentary
+    number: 9
+    label: Close commentary
+    description: Detailed commentary interspersed through the text.
+    response_language: en
+    interactive: false
+    stance: after
+    spoilers: true
+    render: annotated
+  - id: take_aways
+    number: 10
+    label: Post-reading take-aways
+    description: Key language points to carry forward to your next text.
+    response_language: en
+    interactive: false
+    stance: after
+    spoilers: true
+
+# ---------------------------------------------------------------------------
+# Reading pane
+# ---------------------------------------------------------------------------
+# pane_height_px is a budget, not just the pane: when the student has a box to
+# write in, the pane takes work_split of it and the box gets the rest. Both
+# columns therefore stay the same total height whatever the activity is doing.
+reading:
+  font_size_px: 17
+  cjk_font_size_px: 20
+  line_height: 1.75
+  pane_height_px: 640
+  work_split: 0.58
+  draft_min_px: 180

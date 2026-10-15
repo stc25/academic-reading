@@ -1,0 +1,65 @@
+{% load static %}<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    /* Resolve the theme before first paint: saved choice, else the OS preference. */
+    (function () {
+      var t = 'light';
+      try {
+        t = localStorage.getItem('ar-theme');
+        if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      } catch (e) {}
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+  <title>{% block title %}Academic Reading{% endblock %} — Cambridge Language Centre</title>
+  <link rel="icon" type="image/png" href="{% static 'reading/img/logo/logo-light.png' %}">
+  <link rel="icon" type="image/png" href="{% static 'reading/img/logo/logo-dark.png' %}" media="(prefers-color-scheme: dark)">
+  <link rel="apple-touch-icon" href="{% static 'reading/img/logo/logo-dark.png' %}">
+  <link rel="stylesheet" href="{% static 'reading/css/tokens.css' %}">
+  <link rel="stylesheet" href="{% static 'reading/css/app.css' %}">
+  <link rel="stylesheet" href="{% static 'reading/css/footer.css' %}">
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to main content</a>
+  <header class="masthead">
+    <div class="wrap">
+      <a class="brand" href="{% url 'reading:home' %}">
+        <img class="brand-logo" src="{% static 'reading/img/logo/logo-dark.png' %}" alt="" width="32" height="32">
+        <span>Academic Reading</span>
+      </a>
+      <nav aria-label="Main">
+        <a href="{% url 'reading:home' %}"{% if request.resolver_match.url_name != 'history' %} aria-current="page"{% endif %}>Library</a>
+        <a href="{% url 'reading:history' %}"{% if request.resolver_match.url_name == 'history' %} aria-current="page"{% endif %}>History</a>
+        <span class="theme-toggle">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <button type="button" class="theme-switch" role="switch" aria-checked="false" aria-label="Dark mode" id="theme-switch"></button>
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </span>
+      </nav>
+    </div>
+  </header>
+  {% block subheader %}{% endblock %}
+  <main id="content" tabindex="-1">
+    <div class="wrap">
+      {% if messages %}
+        {% for message in messages %}
+          <div class="callout {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+      {% block content %}{% endblock %}
+    </div>
+  </main>
+  {% include 'reading/_footer.html' %}
+  <button type="button" class="back-to-top" id="back-to-top" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
+  <script src="{% static 'reading/js/theme.js' %}"></script>
+  <script src="{% static 'reading/js/back-to-top.js' %}"></script>
+  <script src="{% static 'reading/js/activity-menu.js' %}"></script>
+  {% block extra_scripts %}{% endblock %}
+</body>
+</html>
