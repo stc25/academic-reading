@@ -253,7 +253,7 @@ Final URLs: `https://<hostname>/academic-reading/` and
 | `DJANGO_DEBUG` | `false` in production. |
 | `DJANGO_ALLOWED_HOSTS` | Must include the public hostname — **a wrong value gives HTTP 400.** Set it to your `<hostname>`. |
 | `DJANGO_CSRF_TRUSTED_ORIGINS` | `https://<hostname>`. Wrong value → form posts fail with 403. |
-| `MARIADB_USER`, `MARIADB_PASSWORD`, `MARIADB_ROOT_PASSWORD` | Read by both the app and the MariaDB container. |
+| `MARIADB_USER`, `MARIADB_PASSWORD`, `MARIADB_ROOT_PASSWORD` | Read by both the app and the MariaDB container. The user name can be anything; use the same name in `DATABASE_URL`. |
 | `DATABASE_URL` | `mysql://user:pass@<db service name>:3306/<db>`. Service names are fixed in `docker-compose.yml`. |
 | `OLLAMA_API_KEY` | Ollama Cloud key. |
 
@@ -263,8 +263,8 @@ Sign-in settings (`AUTH_REQUIRED`, `AZURE_CLIENT_ID`/`AZURE_CLIENT_SECRET`, `EMA
 Model names and per-language routing live in each app's `config.yaml` (baked into the image;
 rebuild after editing). Prompts are in `prompts.yaml`.
 
-**Gotcha:** MariaDB only applies `MARIADB_PASSWORD` / `MARIADB_ROOT_PASSWORD` when it creates
-an *empty* data volume. If you later change those passwords in `.env`, the database keeps
+**Gotcha:** MariaDB only applies `MARIADB_USER` / `MARIADB_PASSWORD` / `MARIADB_ROOT_PASSWORD` when it creates
+an *empty* data volume. If you later change those values in `.env`, the database keeps
 the old ones — change them inside MariaDB too, or recreate the volume and re-import.
 
 ## 7. Operations cheat-sheet

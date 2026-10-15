@@ -34,11 +34,11 @@ services:
       - ./academic-reading-eng/academic_reading_django/.env
     environment:
       MARIADB_DATABASE: academic_reading_eng
-      MARIADB_USER: academic_reading
+      # MARIADB_USER / MARIADB_PASSWORD / MARIADB_ROOT_PASSWORD come from the app's .env (env_file above)
     volumes:
       - mariadb_academic_reading_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD-SHELL", "mariadb-admin ping -h 127.0.0.1 -uacademic_reading --password=\"$$MARIADB_PASSWORD\" --silent"]
+      test: ["CMD-SHELL", "mariadb-admin ping -h 127.0.0.1 -u\"$$MARIADB_USER\" --password=\"$$MARIADB_PASSWORD\" --silent"]
       interval: 10s
       timeout: 5s
       retries: 10
@@ -69,11 +69,11 @@ services:
       - ./academic-reading/academic_reading_django/.env
     environment:
       MARIADB_DATABASE: academic_reading_v1
-      MARIADB_USER: academic_reading_v1
+      # MARIADB_USER / MARIADB_PASSWORD / MARIADB_ROOT_PASSWORD come from the app's .env (env_file above)
     volumes:
       - mariadb_academic_reading_v1_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD-SHELL", "mariadb-admin ping -h 127.0.0.1 -uacademic_reading_v1 --password=\"$$MARIADB_PASSWORD\" --silent"]
+      test: ["CMD-SHELL", "mariadb-admin ping -h 127.0.0.1 -u\"$$MARIADB_USER\" --password=\"$$MARIADB_PASSWORD\" --silent"]
       interval: 10s
       timeout: 5s
       retries: 10
