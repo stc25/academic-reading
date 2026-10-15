@@ -4,6 +4,10 @@ Target: `lcapps.langcen.cam.ac.uk`, installed at `/var/www/academic-reading`.
 Written 2026-10-15. The stack in this folder was build-tested end to end on the
 old server (databases restored from dumps, both apps built and passed `/health/`).
 
+This is the **deployment README**. For what each app does and how to configure it, see
+[`academic-reading/README.md`](academic-reading/README.md) (v1) and
+[`academic-reading-eng/README.md`](academic-reading-eng/README.md) (v2).
+
 ## 1. What is being moved
 
 Two sibling Django apps, each with its own MariaDB database, no user login:
