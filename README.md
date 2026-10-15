@@ -68,6 +68,50 @@ The same list is in `apt-packages.txt`.
 
 Resources are modest: ~1 GB RAM for both apps and both databases, ~2 GB disk for images.
 
+### Running Docker without sudo (optional)
+
+Docker's socket is root-owned, so the account that deploys the apps (below, `<username>`) cannot run
+`docker compose` unless it is in the `docker` group or uses rootless Docker. Installing packages
+with apt always needs an admin once. Pick one:
+
+**Option 1 — `docker` group (simplest).** Note that membership is effectively root on that machine.
+
+```bash
+sudo usermod -aG docker <username>      # admin; then <username> logs out and back in
+docker compose up -d --build
+```
+
+**Option 2 — rootless Docker (no extra privileges).** One-off, by an admin:
+
+```bash
+sudo apt install -y docker.io docker-compose-v2 uidmap dbus-user-session slirp4netns
+sudo systemctl disable --now docker.service docker.socket    # optional: rootless only
+sudo loginctl enable-linger <username>                       # keep containers running after logout
+```
+
+Then, as `<username>`:
+
+```bash
+dockerd-rootless-setuptool.sh install
+echo 'export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock' >> ~/.bashrc && source ~/.bashrc
+docker info | grep -i rootless
+cd /var/www/academic-reading && docker compose up -d --build
+```
+
+Rootless caveats:
+- A normal user cannot bind ports below 1024, so the bundled Caddy (80/443) will not start. Either an
+  admin allows it (`sudo sysctl net.ipv4.ip_unprivileged_port_start=80`, persisted in
+  `/etc/sysctl.d/99-unpriv-ports.conf`), or use lcapps' existing web server as the reverse proxy (section 5,
+  option B) and skip `--profile caddy`.
+- The apps publish on `127.0.0.1:8001` / `:8002`, so they work unchanged.
+- Images and volumes, including the MariaDB data, live in `~/.local/share/docker` under that user's home:
+  allow ~2 GB plus data, and include it in backups.
+- Never run `docker compose down -v` unless you mean to delete the databases.
+- Containers survive a reboot only with lingering enabled (above); the services use `restart: unless-stopped`.
+
+**Option 3 — rootless Podman.** `sudo apt install -y podman podman-compose`, then `podman-compose up -d --build`.
+Same 80/443 limitation; less proven with this compose file (only Docker has been tested).
+
 ## 3. What is in the transfer
 
 Two archives. Send the second one over a secure channel; it contains secrets.
@@ -262,8 +306,7 @@ The `--profile caddy` flag is what starts Caddy; without it only the apps and da
 first request, which needs the host reachable from the internet on 80/443. If the University
 supplies certificates instead, see section 5.
 
-If a plain user cannot run Docker, see `rootless-docker.txt` (kept out of git) or ask an admin to add the
-user to the `docker` group.
+If the deploying user cannot run Docker, see "Running Docker without sudo" in section 2.
 
 ### Updating after a change
 
