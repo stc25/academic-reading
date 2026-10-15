@@ -1,0 +1,83 @@
+{% extends "reading/base.html" %}
+{% load static %}
+{% block title %}Library{% endblock %}
+{% block subheader %}
+<div class="library-bar" id="library-bar" role="search" hidden>
+  <div class="wrap">
+    <label class="sr-only" for="library-search">Search the library by title, author, topic or language</label>
+    <input type="search" id="library-search" placeholder="Search texts…" autocomplete="off">
+    <label class="sr-only" for="library-language">Filter by language</label>
+    <select id="library-language"><option value="">All languages</option></select>
+    <span id="library-status" class="sr-only" role="status" aria-live="polite"></span>
+  </div>
+</div>
+{% endblock %}
+{% block content %}
+
+<h1>Academic Reading</h1>
+<p class="callout">Turn any academic text — from the library below, or one you
+  upload — into ten reading-skills activities: pre-reading support,
+  comprehension questions, summaries, notes, structure, style, close
+  commentary and take-aways, all marked by a tutor model.</p>
+
+{% if problems %}
+  <div class="callout warn">
+    <strong>{{ problems|length }} catalogue problem{{ problems|length|pluralize }}</strong>
+    <ul>{% for p in problems %}<li>{{ p }}</li>{% endfor %}</ul>
+  </div>
+{% endif %}
+
+{% if history %}
+  <h2>Continue reading</h2>
+  <div class="cam-autogrid" style="margin-bottom: var(--space-32);">
+    {% for item in history %}
+      <a class="card text-card" href="{% url 'reading:read' pk=item.pk %}">
+        <h3>{{ item.title }}</h3>
+        <div class="byline">
+          {{ item.language_name }}{% if item.author %} · {{ item.author }}{% endif %}
+          {% if item.uploaded %} · uploaded{% endif %}
+        </div>
+      </a>
+    {% endfor %}
+  </div>
+{% endif %}
+
+<h2>Upload your own</h2>
+<form class="upload-form" action="{% url 'reading:upload' %}" method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <div>
+    <label for="file">A text or markdown file</label>
+    <input type="file" id="file" name="file" accept=".txt,.md,.markdown" required>
+  </div>
+  <div>
+    <label for="language">Language (optional — detected if left blank)</label>
+    <input type="text" id="language" name="language" placeholder="e.g. German">
+  </div>
+  <button type="submit" class="btn btn-primary">Upload</button>
+</form>
+
+<h2 id="library" style="margin-top: var(--space-40);">Library</h2>
+<p id="library-empty" hidden>No texts match your search.</p>
+{% if not texts %}
+  <p>No texts found in the library yet.</p>
+{% else %}
+  {% regroup texts by language_name as language_list %}
+  {% for group in language_list %}
+    <div class="lang-group">
+      <h2>{{ group.grouper }}</h2>
+      <div class="cam-autogrid">
+        {% for text in group.list %}
+          <a class="card text-card" href="{% url 'reading:open' source_ref=text.id %}">
+            <h3>{{ text.title }}</h3>
+            <div class="byline">{% if text.author %}{{ text.author }}{% else %}&nbsp;{% endif %}</div>
+            <span class="badge">{{ text.length }} {{ text.length_unit }}</span>
+            {% if text.warnings %}<span class="badge warn">check length</span>{% endif %}
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  {% endfor %}
+{% endif %}
+
+<script src="{% static 'reading/js/library.js' %}"></script>
+{% endblock %}

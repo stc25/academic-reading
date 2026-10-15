@@ -1,0 +1,87 @@
+# Qu'est-ce qu'une nation ?
+
+> Conférence prononcée en 1882.
+
+Messieurs, il y **a** un second point, un second *ordre* d'idées que je dois également aborder, le plus rapidement possible, croyez-le bien: c'est le côté humanitaire et civilisateur de la question.
+
+Sur ce point, **l'honorable** M. Camille Pelletan raille beaucoup, *avec* l'esprit et la finesse qui lui sont propres; il raille, il condamne, et il dit: Qu'est ce que c'est que cette civilisation qu'on impose à coups de canon? Qu'est-ce sinon une autre forme de la barbarie? Est-ce que ces populations de race inférieure n'ont pas autant de droits que vous? Est-ce qu'elles ne sont pas maîtresses chez elles? Est-ce qu'elles vous appellent? Vous allez chez elles contre leur gré; vous les violentez, mais vous ne les civilisez pas.
+
+## II
+
+Voilà, messieurs, la **thèse;** je n'hésite pas à dire *que* ce n'est pas de la politique, cela, ni de l'histoire: c'est de la métaphysique politique... (Ah! ah! à l'extrême gauche.)
+
+Voix à gauche. Parfaitement!
+
+M. Jules Ferry. **et** je vous défie - permettez-moi *de* vous porter ce défi, mon honorable collègue, monsieur Pelletan -, de soutenir jusqu'au bout votre thèse, qui repose sur l'égalité, la liberté, l'indépendance des races inférieures. Vous ne la soutiendrez pas jusqu'au bout, car vous êtes, comme votre honorable collègue et ami M. Georges Perin, le partisan de l'expansion coloniale qui se fait par voie de trafic et de commerce.
+
+[...]
+
+Messieurs, il faut **parler** plus haut et plus vrai! *il* faut dire ouvertement qu'en effet les races supérieures ont un droit vis-à-vis des races inférieures... (Rumeurs sur plusieurs bancs à l'extrême gauche.)
+
+M. Jules Maigne. **Oh!** vous osez dire cela dans *le* pays où ont été proclamés les droits de l'homme!
+
+M. de Guilloutet. **C'est** la justification de l'esclavage et *de* la traite des nègres!
+
+M. Jules Ferry. **Si** l'honorable M. Maigne a raison, *si* la déclaration des droits de l'homme a été écrite pour les noirs de l'Afrique équatoriale, alors de quel droit allez-vous leur imposer les échanges, les trafics? Ils ne vous appellent pas! (Interruptions à l'extrême gauche et à droite. - Très bien! très bien! sur divers bancs à gauche.)
+
+M. Raoul Duval. **Nous** ne voulons pas les leur *imposer!* C'est vous qui les leur imposez!
+
+M. Jules Maigne. Proposer et imposer sont choses fort différentes!
+
+M. Georges Périn. Vous ne pouvez pas cependant faire des échanges forcés!
+
+M. Jules Ferry. **Je** répète qu'il y a pour *les* races supérieures un droit, parce qu'il y a un devoir pour elles. Elles ont le devoir de civiliser les races inférieures... (Marques d'approbation surles mêmes bancs à gauche - Nouvelles interruptions à l'extrême gauche et à droite.)
+
+M. Joseph Fabre. **C'est** excessif! Vous aboutissez ainsi à *l'abdication* des principes de 1789 et de 1848... (Bruit), à la consécration de la loi de grâce remplaçant la loi de justice.
+
+M. Vernhes. Alors **les** missionnaires ont aussi leur droit! *Ne* leur reprochez donc pas d'en user! (Bruit.)
+
+M. le président. N'interrompez pas, monsieur Vernhes!
+
+M. Jules Ferry. Je dis que les races supérieures...
+
+M. Vernhes. Protégez les missionnaires, alors! (Très bien! à droite.)
+
+Voix à gauche. N'interrompez donc pas!
+
+M. Jules Ferry. Je dis que les races supérieures ont des devoirs...
+
+M. Vernhes. Allons donc!
+
+M. Jules Ferry. **Ces** devoirs, messieurs, ont été souvent *méconnus* dans l'histoire des siècles précédents, et certainement, quand les soldats et les explorateurs espagnols introduisaient l'esclavage dans l'Amérique centrale, ils n'accomplissaient pas leur devoir d'hommes de race supérieure. (Très bien! très bien!) Mais, de nos jours, je soutiens que les nations européennes s'acquit­tent avec largeur, avec grandeur et honnêteté, de ce devoir supérieur de civilisation.
+
+M. Paul Bert. La France l'a toujours fait!
+
+M. Jules Ferry. **Est-ce** que vous pouvez nier, est-ce *que* quelqu'un peut nier qu'il y a plus de justice, plus d'ordre matériel et moral, plus d'équité, plus de vertus sociales dans l'Afrique du Nord depuis que la France a fait sa conquête? Quand nous sommes allés à Alger pour détruire la piraterie, et assurer la liberté du commerce dans la Méditerranée, est-ce que nous faisions oeuvre de forbans, de conquérants, de dévastateurs? Est-il possible de nier que, dans l'Inde, et malgré les épisodes douloureux qui se rencontrent dans l'histoire de cette conquête, il y a aujourd'hui infiniment plus de justice, plus de lumière, d'ordre, de vertus publiques et privées depuis la conquête anglaise qu'auparavant?
+
+M. Clemenceau. C'est très douteux!
+
+M. Georges Périn. Rappelez-vous donc le discours de Burke!
+
+M. Jules Ferry. **Est-ce** qu'il est possible de nier *que* ce soit une bonne fortune pour ces malheureuses populations de l'Afrique équatoriale de tomber sous le protectorat de la nation française ou de la nation anglaise? Est-ce que notre premier devoir, la première règle que la France s'est imposée, que l'Angleterre a fait pénétrer dans le droit coutumier des nations européennes et que la conférence de Berlin vient de traduire le droit positif, en obligation sanctionnée par la signature de tous les gouvernements, n'est pas de combattre la traite des nègres, cet horrible trafic, et l'esclavage, cette infamie. (Vives marques d'approbation sur divers bancs.)
+
+[...]
+
+M. Jules Ferry. **Voilà** ce que j'ai à répondre *à* l'honorable M. Pelletan sur le second point qu'il a touché.
+
+Il est ensuite **arrivé** à un troisième, plus délicat, *plus* grave, et sur lequel je vous demande la permission de m'expliquer en toute franchise. C'est le côté politique de la question.
+
+[...]
+
+Messieurs, dans l'Europe **telle** qu'elle est faite, dans cette *concurrence* de tant de rivaux que nous voyons grandir autour de nous, les uns par les perfectionnements militaires ou maritimes, les autres par le développement prodigieux d'une population incessamment croissante; dans une Europe, ou plutôt dans un univers ainsi fait, la politique de recueillement ou d'abstention, c'est tout simplement le grand chemin de la décadence!
+
+Les nations, au **temps** où nous sommes, ne sont *grandes* que par l'activité qu'elles développent; ce n'est pas «par le rayonnement des institutions»... (Interruptions à gauche el à droite) qu'elles sont grandes, à l'heure qu'il est.
+
+M. Paul de **Cassagnac.** Nous nous en souviendrons, c'est *l'apologie* de la guerre!
+
+M. de Baudry **d'Asson.** Très bien! la République, c'est *la* guerre. Nous ferons imprimer votre discours à nos frais et nous le répandrons dans toutes les communes de nos circonscriptions.
+
+M. Jules Ferry. **Rayonner** sans agir, sans se mêler *aux* affaires du monde, en se tenant à l'écart de toutes les combinaisons européennes, en regardant comme un piège, comme une aventure, toute expansion vers l'Afrique ou vers l'Orient, vivre de cette sorte, pour une grande nation, croyez-le bien, c'est abdiquer, et dans un temps plus court que vous ne pouvez le croire, c'est descendre du premier rang au troisième ou au quatrième. (Nouvelles interruptions sur les mêmes bancs. - Très bien! très bien! au centre.) Je ne puis pas, messieurs, et personne, j'imagine, ne peut envisager une pareille destinée pour notre pays.
+
+---
+
+Voir aussi [le texte complet](https://example.org/renan).
+
+```
+ceci est du code et doit disparaitre
+```

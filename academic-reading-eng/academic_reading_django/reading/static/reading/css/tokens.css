@@ -1,0 +1,190 @@
+/* Cambridge Language Centre design tokens, carried over from the Cambridge
+   Design System (colour ramp, type scale, spacing/radii/shadows, breakpoints,
+   responsive class hooks). Feijoa/Open Sans are Cambridge's proprietary
+   webfonts and aren't redistributed here — --font-display/--font-body point
+   straight at the design system's own documented fallback stack instead. */
+
+:root {
+  color-scheme: light;
+
+  /* --- Cambridge Blue (signature teal) family: primary ------ */
+  --colour-blue-50:  #f6fefe;
+  --colour-blue-75:  #def3f1;
+  --colour-blue-100: #c5eeea;
+  --colour-blue-200: #92e2e1;
+  --colour-blue-300: #6fcfcd;
+  --colour-blue-400: #30b7b7;
+  --colour-blue-500: #119ba0;
+  --colour-blue-600: #0c7381;
+  --colour-blue-700: #034553;
+  --colour-blue-800: #06333c;
+  --colour-blue-900: #0f2125;
+
+  /* --- Neutrals (warm-grey, tinted toward the brand) -------- */
+  --colour-neutral-100: #f7f8f7;
+  --colour-neutral-200: #e8edec;
+  --colour-neutral-300: #dbe1df;
+  --colour-neutral-400: #cbd2cf;
+  --colour-neutral-500: #a8b3ae;
+  --colour-neutral-600: #7e8683;
+  --colour-neutral-700: #5d6360;
+  --colour-neutral-800: #3c413f;
+  --colour-neutral-900: #1f2322;
+
+  /* --- Cherry (secondary accent / links) ------------------- */
+  --colour-cherry-100: #fff8fa;
+  --colour-cherry-200: #fce5ed;
+  --colour-cherry-300: #f7c4d5;
+  --colour-cherry-400: #e98aaa;
+  --colour-cherry-500: #aa0943;
+  --colour-cherry-600: #910839;
+  --colour-cherry-700: #74062e;
+
+  --colour-white: #ffffff;
+  --colour-black: #010a14;
+
+  /* --- Semantic aliases -------------------------------------- */
+  --text-primary:   #0f2125;
+  --text-secondary: rgba(15, 33, 37, 0.85);
+  --text-tertiary:  rgba(15, 33, 37, 0.75);
+  --text-inverse:   #ffffff;
+
+  --surface-default:   #f7f8f7;
+  --surface-brand:     #def3f1;
+  --surface-secondary: #ffffff;
+  --surface-tertiary:  #e8edec;
+  --surface-inverse:   #034553;
+
+  --divider-subtle: rgba(3, 69, 83, 0.15);
+  --divider-strong: rgba(3, 69, 83, 0.35);
+
+  --link-default: #0f2125;
+  --link-hover:   #910839;
+  --link-active:  #74062e;
+
+  --status-info-light:    #deeef8;  --status-info-dark:    #00629c;
+  --status-success-light: #ddf4e2;  --status-success-dark: #0b7a24;
+  --status-warning-light: #faede0;  --status-warning-dark: #a8460f;
+  --status-danger-light:  #fae1e0;  --status-danger-dark:  #a72e28;
+
+  --button-primary-bg:        #0f2125;
+  --button-primary-hover:     #06333c;
+  --button-primary-active:    #034553;
+  --button-secondary-bg:      #ffffff;
+  --button-secondary-border:  #7e8683;
+  --button-secondary-border-hover: #5d6360;
+
+  --focus-ring: #0c7381;
+  --button-primary-text: #ffffff;
+  --button-disabled-bg:  #cbd2cf;
+  --anno: #aa0943;
+
+  /* --- Typography (fallback stack — see file header) --------- */
+  --font-display: Georgia, "Times New Roman", serif;
+  --font-body: Arial, "Roboto", sans-serif;
+  --font-reading: Georgia, "Times New Roman", serif;
+
+  --font-weight-regular: 400;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --text-size-1: 15px;
+  --text-size-2: 16px;
+  --text-size-3: 18px;
+  --text-size-4: 20px;
+  --text-size-5: 23px;
+  --text-size-6: 28px;
+  --text-size-7: 34px;
+  --text-size-8: 44px;
+
+  --leading-title: 1.35;
+  --leading-display: 1.4;
+  --leading-heading: 1.45;
+  --leading-body: 1.5;
+  --leading-body-sm: 1.55;
+
+  /* --- Spacing scale (px) ---------------------------------- */
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-48: 48px;
+  --space-64: 64px;
+
+  /* --- Corner radii ---------------------------------------- */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-max: 9999px;
+
+  /* --- Elevation ------------------------------------------- */
+  --shadow-xs: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+  --shadow-sm: 0px 1px 3px 0px rgba(16, 24, 40, 0.10), 0px 1px 2px 0px rgba(16, 24, 40, 0.06);
+  --shadow-md: 0px 4px 8px -2px rgba(1, 10, 20, 0.10), 0px 2px 4px -2px rgba(1, 10, 20, 0.06);
+  --shadow-lg: 0px 12px 16px -4px rgba(1, 10, 20, 0.08), 0px 4px 6px -2px rgba(1, 10, 20, 0.03);
+
+  --duration-fast: 150ms;
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+
+  --container-max: 1280px;
+
+  --breakpoint-sm: 520px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+}
+
+/* --- Dark theme ------------------------------------------------------------
+   Set by the head script in base.html (data-theme on <html>), which resolves a
+   saved choice or the OS preference before first paint. Every foreground/
+   background pair here is checked by scripts/check_contrast.py. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --text-primary:   #e8edec;
+  --text-secondary: rgba(232, 237, 236, 0.85);
+  --text-tertiary:  rgba(232, 237, 236, 0.75);
+  --text-inverse:   #ffffff;
+
+  --surface-default:   #0f2125;
+  --surface-brand:     #0c3a43;
+  --surface-secondary: #16302f;
+  --surface-tertiary:  #1f3d43;
+  --surface-inverse:   #06333c;
+
+  --divider-subtle: rgba(232, 237, 236, 0.16);
+  --divider-strong: rgba(232, 237, 236, 0.40);
+
+  --link-default: #e8edec;
+  --link-hover:   #f7c4d5;
+  --link-active:  #fce5ed;
+
+  --status-info-light:    #0b2a3a;  --status-info-dark:    #6cc3f5;
+  --status-success-light: #0f2e1a;  --status-success-dark: #5fd77d;
+  --status-warning-light: #3a2410;  --status-warning-dark: #f3a468;
+  --status-danger-light:  #3a1614;  --status-danger-dark:  #f5948e;
+
+  --button-primary-bg:    #92e2e1;
+  --button-primary-hover: #6fcfcd;
+  --button-primary-active:#6fcfcd;
+  --button-primary-text:  #0f2125;
+  --button-secondary-bg:  #16302f;
+  --button-secondary-border:       rgba(232, 237, 236, 0.55);
+  --button-secondary-border-hover: rgba(232, 237, 236, 0.80);
+  --button-disabled-bg:   #3c413f;
+
+  --anno: #e98aaa;
+  --focus-ring: #6fcfcd;
+}
+
+/* --- Responsive class hooks (from the design system) -------------------- */
+.cam-autogrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: var(--space-20);
+}

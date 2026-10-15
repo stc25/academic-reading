@@ -1,0 +1,16 @@
+# secrets
+.env
+*.env
+!.env.example
+
+# environments / build output
+.django-venv/
+__pycache__/
+*.pyc
+staticfiles/
+
+# local databases
+*.sqlite3
+
+# Windows download metadata
+*Zone.Identifier

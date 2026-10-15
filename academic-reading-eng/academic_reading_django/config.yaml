@@ -1,0 +1,177 @@
+# Academic-Reading v2 (Django) — configuration
+# Edit this file to change model routing, levels and activities.
+# Nothing here requires the app to be rebuilt; it is re-read on every request.
+
+# ---------------------------------------------------------------------------
+# Model routing
+# ---------------------------------------------------------------------------
+# Ollama Cloud only (OLLAMA_API_KEY in .env) — there is no local backend in
+# the Django build.
+#
+# "default" is used for every language, and "by_language" for the exceptions.
+# Keys there may be an ISO code (zh, ja, ru) or an English language name
+# (Chinese, Japanese) — whichever reads better; both are matched. A language
+# named nowhere below gets the default, so adding a text in a new language
+# needs no change here at all.
+models:
+  # Checked against the account on 2026-08-15: only these four are on the free
+  # tier. gemma4 is fast and good on the European languages; gpt-oss is slower
+  # but gets classical-Chinese romanisation right, where gemma4 does not.
+  cloud:
+    default: gemma4:31b
+    by_language:
+      zh: gpt-oss:120b
+      ja: gpt-oss:120b
+      ko: gpt-oss:120b
+      grc: gpt-oss:120b
+      la: gpt-oss:120b
+
+  options:
+    temperature: 0.3
+    num_ctx: 8192
+
+# ---------------------------------------------------------------------------
+# Levels
+# ---------------------------------------------------------------------------
+# In this version the level belongs to the TEXT, not to the reader — it is the
+# `level` field in source.cfg. It is read as the level of reader the text is
+# meant for, so an "introductory" text is explained generously and an
+# "advanced" one sparingly. If you would rather it meant "this text is hard, so
+# help more", invert the three level_guidance blocks in prompts.yaml; nothing
+# in the code depends on the direction.
+#
+# aliases let source.cfg say B2, or intermediate, or medium, and still land
+# here. Anything unrecognised, and any uploaded text, falls back to default.
+levels:
+  - id: introductory
+    label: Introductory
+    aliases: [a1, a2, b1, "a2/b1", beginner, elementary, easy, basic, starter]
+  - id: intermediate
+    label: Intermediate
+    aliases: [b2, medium, moderate, middle]
+  - id: advanced
+    label: Advanced
+    aliases: [c1, c2, "c1/c2", hard, difficult, demanding]
+
+default_level: intermediate
+
+# ---------------------------------------------------------------------------
+# Texts
+# ---------------------------------------------------------------------------
+# Texts live in sources/ as .txt or .md, described by source.cfg. Anything
+# outside the word range is still readable, but is flagged in the UI: too short
+# and the activities have little to work with, too long and it stops fitting
+# the model's context alongside the prompt.
+#
+# For languages written without spaces the unit is characters, and the range is
+# multiplied by character_ratio.
+texts:
+  directory: sources
+  catalogue: source.cfg
+  min_words: 400
+  max_words: 2000
+  character_ratio: 1.6
+
+# ---------------------------------------------------------------------------
+# Activities
+# ---------------------------------------------------------------------------
+# Everything the app says is in English, so there is no response_language here
+# and no per-activity language toggle.
+#
+# interactive:  the reader writes something and the model responds to it.
+# stance:       before = the reader has not read the text yet; after = they have.
+# spoilers:     false = the model must not give the content away (pre-reading,
+#               and question sets, which must not answer themselves).
+# submit_label: the button under the box the reader writes in.
+# render:       pane (default) = the answer goes in the working pane;
+#               annotated = it is anchored into the reading text instead.
+activities:
+  - id: pre_reading
+    number: 1
+    label: Pre-reading
+    description: Vocabulary, structure and background to prepare you for the text.
+    interactive: false
+    stance: before
+    spoilers: false
+  - id: summative_comprehension
+    number: 2
+    label: Summative comprehension
+    description: Questions about the text as a whole — key ideas, argument, outline.
+    interactive: true
+    stance: after
+    spoilers: false
+    submit_label: Check my answers
+  - id: detailed_comprehension
+    number: 3
+    label: Detailed comprehension
+    description: Questions about specific details, answerable by close reading.
+    interactive: true
+    stance: after
+    spoilers: false
+    submit_label: Check my answers
+  - id: passive_summary
+    number: 4
+    label: Passive summary
+    description: A concise summary of the text in English.
+    interactive: false
+    stance: after
+    spoilers: true
+  - id: active_summary
+    number: 5
+    label: Active summary
+    description: You write the summary; the app comments on its accuracy.
+    interactive: true
+    stance: after
+    spoilers: true
+    submit_label: Comment on my summary
+  - id: notes
+    number: 6
+    label: Notes
+    description: You write bullet-point notes; the app comments on them.
+    interactive: true
+    stance: after
+    spoilers: true
+    submit_label: Comment on my notes
+  - id: structure
+    number: 7
+    label: Structure
+    description: How the text is built — narrative or argumentative, with rhetorical means.
+    interactive: false
+    stance: after
+    spoilers: true
+  - id: style
+    number: 8
+    label: Stylistic observation
+    description: Style, genre conventions and contrasts with typical English writing.
+    interactive: false
+    stance: after
+    spoilers: true
+  - id: close_commentary
+    number: 9
+    label: Close commentary
+    description: Detailed commentary interspersed through the text.
+    interactive: false
+    stance: after
+    spoilers: true
+    render: annotated
+  - id: take_aways
+    number: 10
+    label: Post-reading take-aways
+    description: Key language points to carry forward to your next text.
+    interactive: false
+    stance: after
+    spoilers: true
+
+# ---------------------------------------------------------------------------
+# Reading pane
+# ---------------------------------------------------------------------------
+# pane_height_px is a budget, not just the pane: when the reader has a box to
+# write in, the pane takes work_split of it and the box gets the rest, so both
+# columns stay the same total height whatever the activity is doing.
+reading:
+  font_size_px: 17
+  cjk_font_size_px: 20
+  line_height: 1.75
+  pane_height_px: 640
+  work_split: 0.58
+  draft_min_px: 180
