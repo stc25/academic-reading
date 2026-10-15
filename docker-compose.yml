@@ -80,7 +80,7 @@ services:
       start_period: 20s
 
   # Optional: only started with `--profile caddy`. Skip it if lcapps already has a
-  # reverse proxy on 80/443 (see HANDOVER.md, "Reverse proxy").
+  # reverse proxy on 80/443 (see README.md, "Reverse proxy").
   caddy:
     image: caddy:2
     profiles: ["caddy"]

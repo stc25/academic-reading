@@ -73,7 +73,7 @@ Two archives. Send the second one over a secure channel; it contains secrets.
    ```
    docker-compose.yml          standalone stack (apps, DBs, optional Caddy)
    Caddyfile                   optional bundled reverse proxy
-   HANDOVER.md                 this file
+   README.md                 this file
    deploy/                     backup-db.sh, restore-db.sh, SQL dumps
    academic-reading/           v1 app (its own .git repo)
    academic-reading-eng/       v2 app (its own .git repo)
