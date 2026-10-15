@@ -14,6 +14,11 @@ Both are Django apps running in Docker with a MariaDB database each, using Ollam
 models. They need no login. This repository holds both apps plus the Docker Compose stack, Caddy reverse
 proxy configuration and scripts needed to run them together, and this document explains how to deploy them.
 
+**Target:** any Linux server with Docker and the Compose plugin (written for Ubuntu 24.04), with the project
+installed in a directory of your choice. The server's public hostname appears in three places, so change
+them together if you deploy somewhere else: the site address in `Caddyfile`, and `DJANGO_ALLOWED_HOSTS` and
+`DJANGO_CSRF_TRUSTED_ORIGINS` in each app's `.env`. Commands below assume the project is in the current directory.
+
 Written 2026-10-15. The stack in this folder was build-tested end to end on the
 old server (databases restored from dumps, both apps built and passed `/health/`).
 
