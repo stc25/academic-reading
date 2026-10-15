@@ -1,0 +1,25 @@
+{$DOMAIN} {
+    encode gzip
+
+    redir /academic-reading-eng /academic-reading-eng/ 308
+    redir /academic-reading /academic-reading/ 308
+
+    # handle_path strips the prefix; the apps add it back via FORCE_SCRIPT_NAME.
+    handle_path /academic-reading-eng/* {
+        reverse_proxy academic-reading-eng:8000 {
+            header_up Host {host}
+            header_up X-Real-IP {remote}
+        }
+    }
+
+    handle_path /academic-reading/* {
+        reverse_proxy academic-reading:8000 {
+            header_up Host {host}
+            header_up X-Real-IP {remote}
+        }
+    }
+
+    handle {
+        respond "Nothing to see here" 404
+    }
+}

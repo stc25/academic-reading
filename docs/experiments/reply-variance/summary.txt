@@ -1,0 +1,46 @@
+activity                 jaccard seqratio  lenCV  sameHeadings  qCounts
+pre_reading                 0.53     0.67   0.03        4/4  [[0], [0], [0], [0, 3]]
+summative_comprehension     0.35     0.50   0.09        4/4  [[5], [5], [5], [5]]
+detailed_comprehension      0.35     0.46   0.14        3/4  [[7], [7], [7], [7]]
+passive_summary             0.51     0.68   0.04        3/4  [[0], [0], [0], [0]]
+structure                   0.42     0.48   0.05        3/4  [[5, 8, 9], [5, 6, 7], [6, 7], [7, 13, 15]]
+style                       0.43     0.50   0.04        4/4  [[0], [0], [0], [0]]
+close_commentary            0.36     0.50   0.08        4/4  [[0], [0], [0], [0]]
+take_aways                  0.48     0.60   0.05        4/4  [[0], [0], [0], [3]]
+
+per text/activity:
+  pre_reading           de-01   jac=0.61 seq=0.73 lenCV=0.02 len 2795-2904 headings_same=True
+  pre_reading           fr-01   jac=0.58 seq=0.74 lenCV=0.03 len 2687-2895 headings_same=True
+  pre_reading           it-01   jac=0.56 seq=0.74 lenCV=0.06 len 2557-2910 headings_same=True
+  pre_reading           zh-01   jac=0.36 seq=0.46 lenCV=0.03 len 3347-3553 headings_same=True
+  summative_comprehensionde-01   jac=0.35 seq=0.43 lenCV=0.20 len 579-879 headings_same=True
+  summative_comprehensionfr-01   jac=0.47 seq=0.61 lenCV=0.05 len 621-697 headings_same=True
+  summative_comprehensionit-01   jac=0.44 seq=0.59 lenCV=0.03 len 637-691 headings_same=True
+  summative_comprehensionzh-01   jac=0.16 seq=0.38 lenCV=0.08 len 291-349 headings_same=True
+  detailed_comprehensionde-01   jac=0.31 seq=0.35 lenCV=0.16 len 797-1113 headings_same=True
+  detailed_comprehensionfr-01   jac=0.53 seq=0.61 lenCV=0.04 len 931-1018 headings_same=True
+  detailed_comprehensionit-01   jac=0.38 seq=0.55 lenCV=0.17 len 773-1172 headings_same=True
+  detailed_comprehensionzh-01   jac=0.19 seq=0.30 lenCV=0.20 len 263-432 headings_same=False
+  passive_summary       de-01   jac=0.59 seq=0.78 lenCV=0.04 len 2057-2247 headings_same=True
+  passive_summary       fr-01   jac=0.61 seq=0.74 lenCV=0.01 len 1918-1966 headings_same=True
+  passive_summary       it-01   jac=0.52 seq=0.64 lenCV=0.02 len 1692-1796 headings_same=True
+  passive_summary       zh-01   jac=0.33 seq=0.55 lenCV=0.08 len 2177-2619 headings_same=False
+  structure             de-01   jac=0.43 seq=0.44 lenCV=0.05 len 3649-4084 headings_same=True
+  structure             fr-01   jac=0.49 seq=0.57 lenCV=0.02 len 3433-3598 headings_same=True
+  structure             it-01   jac=0.49 seq=0.58 lenCV=0.03 len 3738-4034 headings_same=True
+  structure             zh-01   jac=0.26 seq=0.32 lenCV=0.08 len 4067-4941 headings_same=False
+  style                 de-01   jac=0.39 seq=0.34 lenCV=0.02 len 3425-3603 headings_same=True
+  style                 fr-01   jac=0.46 seq=0.58 lenCV=0.03 len 3393-3608 headings_same=True
+  style                 it-01   jac=0.53 seq=0.62 lenCV=0.02 len 3535-3697 headings_same=True
+  style                 zh-01   jac=0.35 seq=0.45 lenCV=0.08 len 3807-4551 headings_same=True
+  close_commentary      de-01   jac=0.37 seq=0.57 lenCV=0.02 len 1820-1910 headings_same=True
+  close_commentary      fr-01   jac=0.40 seq=0.54 lenCV=0.12 len 1606-2047 headings_same=True
+  close_commentary      it-01   jac=0.40 seq=0.57 lenCV=0.02 len 1928-2025 headings_same=True
+  close_commentary      zh-01   jac=0.27 seq=0.32 lenCV=0.16 len 1817-2592 headings_same=True
+  take_aways            de-01   jac=0.53 seq=0.69 lenCV=0.03 len 2787-2985 headings_same=True
+  take_aways            fr-01   jac=0.55 seq=0.70 lenCV=0.04 len 2666-2958 headings_same=True
+  take_aways            it-01   jac=0.50 seq=0.60 lenCV=0.04 len 2936-3247 headings_same=True
+  take_aways            zh-01   jac=0.35 seq=0.43 lenCV=0.08 len 2521-3036 headings_same=True
+
+failures/short: []
+secs mean by model: {'gemma4:31b': 6.4, 'gpt-oss:120b': 14.7}

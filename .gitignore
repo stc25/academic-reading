@@ -1,0 +1,14 @@
+# secrets and data never go in git
+.env
+*.env
+!.env.example
+!.env.production.example
+*.sql
+*.zip
+backups/
+.django-venv/
+__pycache__/
+*.pyc
+staticfiles/
+*.sqlite3
+*Zone.Identifier

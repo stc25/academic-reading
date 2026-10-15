@@ -1,0 +1,27 @@
+# Academic Reading - apt packages for Ubuntu 24.04 (noble) on lcapps
+#
+# Option A (simplest): Docker from Ubuntu's own repositories.
+#   sudo apt update
+#   sudo apt install -y $(grep -vE '^\s*(#|$)' apt-packages.txt | sed -n '1,/^---/p' | grep -v '^---')
+# or just: sudo apt install -y docker.io docker-compose-v2 unzip curl git ca-certificates
+#
+# Then: sudo usermod -aG docker $USER   (log out/in), and verify: docker compose version
+
+docker.io
+docker-compose-v2
+unzip
+curl
+git
+ca-certificates
+---
+# Option B: Docker's official repository (newer Docker). Replace docker.io and
+# docker-compose-v2 above with these, after adding the repo per
+# https://docs.docker.com/engine/install/ubuntu/ :
+#
+#   docker-ce
+#   docker-ce-cli
+#   containerd.io
+#   docker-buildx-plugin
+#   docker-compose-plugin
+#
+# Do not install both sets - they conflict.
