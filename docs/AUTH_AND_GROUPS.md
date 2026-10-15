@@ -9,6 +9,9 @@ to `academic-reading` (v1) and `academic-reading-eng` (v2).
 - Email/account workflow reference:
   `/var/www/french-chat/django-user-registration-email-workflow.md`
 
+> **Update:** the login part of this plan (SSO + email accounts + auth gate + per-user history) is built for both apps
+> on the `auth` branch and documented in `docs/LOGIN.md`. Groups and the database-managed library below remain unbuilt.
+
 ## Status (2026-10-14)
 
 | Step | v1 `academic-reading` | v2 `academic-reading-eng` |

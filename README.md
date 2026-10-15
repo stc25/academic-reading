@@ -11,7 +11,7 @@ activities, from pre-reading to post-reading take-aways, with an AI tutor respon
 - **Academic Reading v2 (`-eng`)** — texts in any language, with the tutor replying in English throughout.
 
 Both are Django apps running in Docker with a MariaDB database each, using Ollama Cloud for the language
-models. They need no login. This repository holds both apps plus the Docker Compose stack, Caddy reverse
+models. Sign-in (University SSO and email accounts) is built in but switched off by default; see `docs/LOGIN.md`. This repository holds both apps plus the Docker Compose stack, Caddy reverse
 proxy configuration and scripts needed to run them together, and this document explains how to deploy them.
 
 **Target:** any Linux server with Docker and the Compose plugin (written for Ubuntu 24.04), with the project
@@ -257,6 +257,9 @@ Final URLs: `https://<hostname>/academic-reading/` and
 | `DATABASE_URL` | `mysql://user:pass@<db service name>:3306/<db>`. Service names are fixed in `docker-compose.yml`. |
 | `OLLAMA_API_KEY` | Ollama Cloud key. |
 
+Sign-in settings (`AUTH_REQUIRED`, `AZURE_CLIENT_ID`/`AZURE_CLIENT_SECRET`, `EMAIL_*`) are documented in
+`docs/LOGIN.md` and listed, all defaulting to off, in each app's `.env.production.example`.
+
 Model names and per-language routing live in each app's `config.yaml` (baked into the image;
 rebuild after editing). Prompts are in `prompts.yaml`.
 
@@ -357,9 +360,10 @@ without the compose stack. Use the combined repo above for deployment.
 
 - `db.sqlite3` files inside the app folders are stale local-dev leftovers; production uses MariaDB
   (selected whenever `DATABASE_URL` is set). Not shipped.
-- No login/SSO on these apps. An auth + groups plan exists in `docs/AUTH_AND_GROUPS.md` (build paused).
+- Sign-in (Entra SSO, email accounts) is built but **off by default**: setup and switch-over runbook in `docs/LOGIN.md`.
+  Group-restricted texts are a separate, unbuilt plan (`docs/AUTH_AND_GROUPS.md`).
 - The shared reply cache is described in `docs/REPLY_CACHE.md`. It is stored in MariaDB (`reading_cachedreply`).
-- Session cookies are named `are_sessionid` / `are_csrftoken`, scoped to the app path — moving host
+- Session cookies are named `arm_sessionid` / `arm_csrftoken` (v1) and `are_sessionid` / `are_csrftoken` (v2), scoped to the app path — moving host
   logs readers out once, which is harmless.
 - On the old server these apps ran inside a larger shared compose (`cnlp-docker-hosting`) behind
   a shared Caddy. After cutover the two old containers + two MariaDB containers there can be
