@@ -1,6 +1,5 @@
 # Academic Reading — server handover
 
-Target: `lcapps.langcen.cam.ac.uk`, installed at `/var/www/academic-reading`.
 Written 2026-10-15. The stack in this folder was build-tested end to end on the
 old server (databases restored from dumps, both apps built and passed `/health/`).
 
