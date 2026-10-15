@@ -221,21 +221,75 @@ Adding texts: v1 → drop files in `academic-reading/academic_reading_django/tex
 its `manifest.json`; v2 → drop `.txt`/`.md` into `academic-reading-eng/academic_reading_django/sources/`
 (optionally describe in `source.cfg`; see `academic-reading-eng/README.md`). Then rebuild.
 
-## 8. Using git
+## 8. Deploying from git (both apps + Caddy)
 
-Each app is already its own git repository (`academic-reading/.git`, `academic-reading-eng/.git`;
-full history is in the zip). Neither has a remote configured. Recommended:
+The whole stack is in one public repository, <https://github.com/stc25/academic-reading>:
+both apps (each with its full history), `docker-compose.yml`, `Caddyfile` and `deploy/`.
+Git never holds secrets or data, so those are copied separately.
 
-1. Create two repos on the University GitLab/GitHub (or one repo per app), then on the old server:
-   `git remote add origin <url> && git push -u origin main`
-   (commit the one pending change first — `reading/static/reading/css/app.css` is modified but uncommitted in both).
-2. On lcapps: `git clone` each into `/var/www/academic-reading/<app>`, then drop the `.env` files in.
-   Updates become `git pull && docker compose up -d --build`.
-3. Git already ignores `.env`, `db.sqlite3`, `.django-venv/`, `staticfiles/`. **Never commit `.env` or the SQL dumps** (reader history, secrets).
-   The data and the secrets always travel separately, as above.
+### First deployment
 
-The top-level `docker-compose.yml`, `Caddyfile`, `deploy/` and this document are not in either
-repo (they sit above both). Put them in a small third "deployment" repo, minus `deploy/*.sql`.
+```bash
+# 1) Prerequisites: Docker + Compose plugin (section 2), DNS and 80/443 open for lcapps.langcen.cam.ac.uk.
+#    Port 80/443 must be free for the bundled Caddy; otherwise use your own proxy (section 5, option B).
+
+# 2) Clone into place (the target folder must not already exist, or must be empty)
+sudo mkdir -p /var/www && sudo chown $USER /var/www
+git clone https://github.com/stc25/academic-reading.git /var/www/academic-reading
+cd /var/www/academic-reading
+
+# 3) Secrets: place the two .env files (from academic-reading-secrets.zip, sent over a secure channel)
+unzip -o ~/academic-reading-secrets.zip          # -> <app>/academic_reading_django/.env
+chmod 600 */academic_reading_django/.env
+
+# 4) Optional, only to carry over existing data: copy the SQL dumps in, then load them
+#    (the .sql files are NOT in git; see "Data note" in section 4)
+#    scp old-server:.../academic_reading_eng.sql old-server:.../academic_reading_v1.sql deploy/
+#    deploy/restore-db.sh deploy/academic_reading_eng.sql deploy/academic_reading_v1.sql
+
+# 5) Build and start both apps, both databases and Caddy in one go
+docker compose --profile caddy up -d --build
+
+# 6) Check
+docker compose ps                                 # everything "healthy"
+curl -s -o /dev/null -w '%{http_code}\n' https://lcapps.langcen.cam.ac.uk/academic-reading/
+curl -s -o /dev/null -w '%{http_code}\n' https://lcapps.langcen.cam.ac.uk/academic-reading-eng/
+```
+
+The `--profile caddy` flag is what starts Caddy; without it only the apps and databases run
+(bound to `127.0.0.1:8001` / `:8002`). Caddy gets a Let's Encrypt certificate automatically on the
+first request, which needs the host reachable from the internet on 80/443. If the University
+supplies certificates instead, see section 5.
+
+If a plain user cannot run Docker, see `rootless-docker.txt` (kept out of git) or ask an admin to add the
+user to the `docker` group.
+
+### Updating after a change
+
+```bash
+cd /var/www/academic-reading
+git pull
+docker compose --profile caddy up -d --build     # rebuilds only what changed, restarts those services
+```
+
+Rebuild is needed for any change to code, `config.yaml`, `prompts.yaml`, texts or `sources/`, because
+they are baked into the images. A changed `Caddyfile` needs `docker compose --profile caddy up -d --force-recreate caddy` (a plain `restart` can keep serving the old file, because `git pull` replaces the file and the container's bind mount still points at the old copy).
+Use `--profile caddy` on every compose command that should include Caddy (`ps`, `logs`, `down`).
+Databases and certificates live in Docker volumes, so `git pull` and rebuilds never touch them.
+
+To redeploy one app only: `docker compose up -d --build academic-reading-eng` (or `academic-reading`).
+
+### What stays out of git
+
+`.env` files, `*.sql` dumps, `backups/`, zips, `db.sqlite3`, `.django-venv/` and `staticfiles/` are in `.gitignore`.
+**Never commit `.env` or the SQL dumps** (secrets and reader history). Anything you edit on lcapps itself
+(for example `.env`) is untouched by `git pull`; local edits to tracked files can block it, so change code in
+the repo and pull rather than editing on the server.
+
+### Also available as two separate repos
+
+`academic-reading-eng` (v2) is also published alone at <https://github.com/stc25/academic-reading-eng>,
+without the compose stack. Use the combined repo above for deployment.
 
 ## 9. Things to know
 
