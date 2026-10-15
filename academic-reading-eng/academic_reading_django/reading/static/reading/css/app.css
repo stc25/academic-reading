@@ -353,3 +353,8 @@ p { line-height: var(--leading-body); }
 .library-bar input::placeholder { color: var(--text-secondary); opacity: 1; }
 .text-card[hidden], .lang-group[hidden] { display: none; }
 #library-empty { color: var(--text-secondary); }
+
+/* Sign-out control (shown only when signed in) */
+.signout-form{display:inline}
+.linklike{background:none;border:0;padding:0;color:inherit;text-decoration:underline;cursor:pointer;font:inherit}
+.whoami{margin-right:.5rem;opacity:.8}

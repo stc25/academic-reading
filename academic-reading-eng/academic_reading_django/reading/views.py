@@ -1,6 +1,6 @@
 """Views for the reading app.
 
-Server-rendered, session-scoped, no accounts. The reading logic itself
+Server-rendered. History is session-scoped (anonymous) or per-user (AUTH_REQUIRED). The reading logic itself
 (corpus/prompts/annotate/languages/llm) is ported nearly verbatim from the
 original Streamlit app's lib/ package into reading/logic/ — see that
 package for the real work; these views are mostly plumbing between it and
@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import hashlib
 
+from django.conf import settings
 from django.contrib import messages
 from django.http import Http404, HttpResponseBadRequest, StreamingHttpResponse
 from django.db.models import F
@@ -44,8 +45,23 @@ def _ensure_session_key(request) -> str:
     return request.session.session_key
 
 
+def _owner(request) -> dict:
+    """The ReadingSession filter identifying whose history this is."""
+    if settings.AUTH_REQUIRED:
+        return {"user": request.user}
+    return {"session_key": _session_key(request)}
+
+
+def _owner_lookup(request) -> tuple[dict, dict]:
+    """(get_or_create lookup, extra defaults) for creating a ReadingSession."""
+    key = _ensure_session_key(request)
+    if settings.AUTH_REQUIRED:
+        return {"user": request.user}, {"session_key": key}
+    return {"session_key": key}, {}
+
+
 def _get_session(request, pk: int) -> ReadingSession:
-    return get_object_or_404(ReadingSession, pk=pk, session_key=_session_key(request))
+    return get_object_or_404(ReadingSession, pk=pk, **_owner(request))
 
 
 def _get_activity(activity_id: str, config: Config) -> Activity:
@@ -81,11 +97,8 @@ def home_view(request):
     languages = sorted({t.language_name for t in texts})
 
     history = []
-    session_key = _session_key(request)
-    if session_key:
-        history = list(
-            ReadingSession.objects.filter(session_key=session_key).order_by("-created_at")
-        )
+    if settings.AUTH_REQUIRED or _session_key(request):
+        history = list(ReadingSession.objects.filter(**_owner(request)).order_by("-created_at"))
 
     return render(
         request,
@@ -106,12 +119,13 @@ def open_view(request, source_ref: str):
     if text is None:
         raise Http404("Text not found.")
 
-    _ensure_session_key(request)
+    lookup, extra = _owner_lookup(request)
     level = config.level(text.level_value)
     session, _created = ReadingSession.objects.get_or_create(
-        session_key=request.session.session_key,
         source_ref=f"lib:{text.id}",
+        **lookup,
         defaults=dict(
+            **extra,
             title=text.title,
             author=text.author,
             language_code=text.lang,
@@ -143,13 +157,14 @@ def upload_view(request):
         if code:
             text.lang, text.language = code, name
 
-    _ensure_session_key(request)
+    lookup, extra = _owner_lookup(request)
     level = config.level(text.level_value)
     source_ref = "upload:" + hashlib.sha1(text.body.encode("utf-8")).hexdigest()[:16]
     session, _created = ReadingSession.objects.get_or_create(
-        session_key=request.session.session_key,
         source_ref=source_ref,
+        **lookup,
         defaults=dict(
+            **extra,
             title=text.title,
             author="",
             language_code=text.lang,
@@ -362,14 +377,13 @@ def submit_view(request, pk: int, activity_id: str):
 
 
 def history_view(request):
-    session_key = _session_key(request)
     config = _config()
     labels = {a.id: a.label for a in config.activities}
 
     sessions_data = []
-    if session_key:
+    if settings.AUTH_REQUIRED or _session_key(request):
         sessions = (
-            ReadingSession.objects.filter(session_key=session_key)
+            ReadingSession.objects.filter(**_owner(request))
             .prefetch_related("turns")
             .order_by("-created_at")
         )

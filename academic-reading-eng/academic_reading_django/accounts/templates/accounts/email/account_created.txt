@@ -1,0 +1,9 @@
+{% autoescape off %}Hello{% if user.first_name %} {{ user.first_name }}{% endif %},
+
+An account has been created for you on Academic Reading (Cambridge Language Centre).
+Set your password using this link (it can be used once and expires in 7 days):
+
+{{ set_password_url }}
+
+If you weren't expecting this, you can ignore this email.
+{% endautoescape %}

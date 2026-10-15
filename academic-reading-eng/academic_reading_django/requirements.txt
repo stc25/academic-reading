@@ -1,4 +1,4 @@
-Django>=5.0,<5.2
+Django>=5.2,<5.3
 gunicorn
 whitenoise
 PyMySQL
@@ -9,3 +9,6 @@ langdetect
 hanzidentifier
 markdown
 bleach
+django-unfold>=0.64.0
+# >=6.0.0 pulls in social-auth-core>=5.0.0 (PyJWT CVE fixes), as in the other apps.
+social-auth-app-django>=6.0.0

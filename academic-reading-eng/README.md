@@ -2,7 +2,7 @@
 
 A reading-skills tutor for academic texts in **any language**. Everything the app says is in
 **English**, whatever the text is written in. The reader picks a text and works through ten
-guided activities; the tutor is an LLM (Ollama Cloud) prompted per activity. There is no login.
+guided activities; the tutor is an LLM (Ollama Cloud) prompted per activity. Sign-in is optional and off by default (see below).
 
 Live path: `/academic-reading-eng/`. Sibling app: [`academic-reading`](../academic-reading/)
 (v1, four languages, level and reply language chosen by the reader).
@@ -50,7 +50,11 @@ The ten activities and the two-column layout are the same.
 - Two-column layout, with replies streaming in as they are written.
 - **History** page of every text worked on, with activities tried and attempt counts; **Reset** clears one text's history.
 - Light and dark theme (follows the OS, remembered per browser).
-- No account: a browser cookie (`are_sessionid`, one year) keeps a reader's work between visits.
+- **Anonymous by default:** a browser cookie (`are_sessionid`, one year) keeps a reader's work between visits.
+- **Optional sign-in (off by default):** with `AUTH_REQUIRED=true` readers must sign in with University Microsoft
+  (Entra ID) SSO, restricted to an admin-managed allowlist, or with an admin-created email + password account for
+  people outside Cambridge. History then belongs to the account and follows it across devices. Admin site at
+  `/django-admin/`. Setup and switch-over runbook: [`docs/LOGIN.md`](../docs/LOGIN.md).
 
 ## Behaviour worth knowing
 
@@ -139,6 +143,7 @@ python manage.py test              # reply-cache tests
 
 ```
 academic_reading_django/
+  accounts/           sign-in: allowlist model, SSO pipeline, login views, auth gate, admin
   reading/            views, models (ReadingSession, ActivityTurn, CachedReply), templates, static
   reading/logic/      prompts, LLM client, corpus loading, annotations
   sources/  source.cfg   the text library
