@@ -1,5 +1,19 @@
 # Academic Reading — server handover
 
+## Overview
+
+Academic Reading is a pair of web apps that help language learners read authentic academic texts.
+The learner opens a text (from a built-in library or their own upload) and works through ten guided
+activities, from pre-reading to post-reading take-aways, with an AI tutor responding to each.
+
+- **Academic Reading (v1)** — German, French, Italian and Chinese; the reader chooses their level and
+  reply language.
+- **Academic Reading v2 (`-eng`)** — texts in any language, with the tutor replying in English throughout.
+
+Both are Django apps running in Docker with a MariaDB database each, using Ollama Cloud for the language
+models. They need no login. This repository holds both apps plus the Docker Compose stack, Caddy reverse
+proxy configuration and scripts needed to run them together, and this document explains how to deploy them.
+
 Written 2026-10-15. The stack in this folder was build-tested end to end on the
 old server (databases restored from dumps, both apps built and passed `/health/`).
 
