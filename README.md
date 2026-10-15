@@ -15,7 +15,8 @@ models. They need no login. This repository holds both apps plus the Docker Comp
 proxy configuration and scripts needed to run them together, and this document explains how to deploy them.
 
 **Target:** any Linux server with Docker and the Compose plugin (written for Ubuntu 24.04), with the project
-installed in a directory of your choice. The server's public hostname appears in three places, so change
+installed in a directory of your choice. Throughout this document `<install-dir>` is that directory
+(for example `/var/www/academic-reading`) and `<hostname>` is the server's public hostname. The hostname appears in three places, so change
 them together if you deploy somewhere else: the site address in `Caddyfile`, and `DJANGO_ALLOWED_HOSTS` and
 `DJANGO_CSRF_TRUSTED_ORIGINS` in each app's `.env`. Commands below assume the project is in the current directory.
 
@@ -42,7 +43,7 @@ WhiteNoise serving static files. The LLM is **Ollama Cloud** (`OLLAMA_API_KEY`).
 The `app.py`, `lib/`, `uv.lock`, `pyproject.toml` files at each app's top level
 are the original Streamlit prototype and are **not** used by the Docker build.
 
-## 2. What to install on lcapps
+## 2. What to install on the server
 
 Only this. No Python, MariaDB, or Node on the host — everything runs in containers.
 
@@ -81,7 +82,7 @@ The same list is in `apt-packages.txt`.
 - **Outbound HTTPS** from the host to `ollama.com` (Ollama Cloud), and to Docker Hub /
   PyPI during the first build (`python:3.12-slim`, `mariadb:11.4`, `caddy:2`, pip packages).
 - **Inbound 80/443** to the host (or to whatever reverse proxy fronts it), and a DNS
-  record plus TLS certificate for `lcapps.langcen.cam.ac.uk`.
+  record plus TLS certificate for `<hostname>`.
 - Add the deploying user to the `docker` group.
 
 Resources are modest: ~1 GB RAM for both apps and both databases, ~2 GB disk for images.
@@ -113,13 +114,13 @@ Then, as `<username>`:
 dockerd-rootless-setuptool.sh install
 echo 'export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock' >> ~/.bashrc && source ~/.bashrc
 docker info | grep -i rootless
-cd /var/www/academic-reading && docker compose up -d --build
+cd <install-dir> && docker compose up -d --build
 ```
 
 Rootless caveats:
 - A normal user cannot bind ports below 1024, so the bundled Caddy (80/443) will not start. Either an
   admin allows it (`sudo sysctl net.ipv4.ip_unprivileged_port_start=80`, persisted in
-  `/etc/sysctl.d/99-unpriv-ports.conf`), or use lcapps' existing web server as the reverse proxy (section 5,
+  `/etc/sysctl.d/99-unpriv-ports.conf`), or use the server's existing web server as the reverse proxy (section 5,
   option B) and skip `--profile caddy`.
 - The apps publish on `127.0.0.1:8001` / `:8002`, so they work unchanged.
 - Images and volumes, including the MariaDB data, live in `~/.local/share/docker` under that user's home:
@@ -135,7 +136,7 @@ Same 80/443 limitation; less proven with this compose file (only Docker has been
 Two archives. Send the second one over a secure channel; it contains secrets.
 
 1. `academic-reading-handover.zip` — everything except secrets, virtualenvs and build junk.
-   Unzips to an `academic-reading/` folder; its contents belong **at `/var/www/academic-reading`**:
+   Unzips to an `academic-reading/` folder; its contents belong **in `<install-dir>`**:
    ```
    docker-compose.yml          standalone stack (apps, DBs, optional Caddy)
    Caddyfile                   optional bundled reverse proxy
@@ -147,7 +148,7 @@ Two archives. Send the second one over a secure channel; it contains secrets.
    ```
 2. `academic-reading-secrets.zip` — the two `.env` files (they hold `SECRET_KEY`, the
    MariaDB passwords and `OLLAMA_API_KEY`). The hostnames in them are **already changed**
-   to `lcapps.langcen.cam.ac.uk`; the passwords are unchanged. Unzip it over the tree so
+   to the hostname this was prepared for; edit them if yours differs (section 6). The passwords are unchanged. Unzip it over the tree so
    each lands at `<app>/academic_reading_django/.env`. Delete the zip afterwards.
 
    Consider rotating `OLLAMA_API_KEY` once the new server is live.
@@ -155,9 +156,8 @@ Two archives. Send the second one over a secure channel; it contains secrets.
 ## 4. Install
 
 ```bash
-sudo mkdir -p /var/www && cd /var/www
-unzip academic-reading-handover.zip          # creates /var/www/academic-reading
-cd academic-reading
+unzip academic-reading-handover.zip          # creates an academic-reading/ folder: this is <install-dir>
+cd academic-reading                          # i.e. cd <install-dir>
 unzip -o ~/academic-reading-secrets.zip      # places the two .env files
 chmod +x deploy/*.sh
 chmod 600 */academic_reading_django/.env
@@ -188,7 +188,7 @@ readers' history since then is missing. On cutover day, take fresh dumps on the 
 server and restore those instead:
 
 ```bash
-# old server — from /var/www/cnlp-docker-hosting (container names as in that compose)
+# source server — run where its compose stack runs; substitute its actual container names
 docker exec cnlp-mariadb-academic-reading    sh -c 'mariadb-dump -uroot -p"$MARIADB_ROOT_PASSWORD" --single-transaction --default-character-set=utf8mb4 academic_reading_eng' > academic_reading_eng.sql
 docker exec cnlp-mariadb-academic-reading-v1 sh -c 'mariadb-dump -uroot -p"$MARIADB_ROOT_PASSWORD" --single-transaction --default-character-set=utf8mb4 academic_reading_v1'  > academic_reading_v1.sql
 ```
@@ -205,19 +205,20 @@ Both apps are mounted on a **sub-path** and expect the proxy to **strip the pref
 before forwarding (the app re-adds it via `FORCE_SCRIPT_NAME`). They must also receive
 the original `Host` header.
 
-**A. Bundled Caddy** (only if nothing else owns ports 80/443 on lcapps):
+**A. Bundled Caddy** (only if nothing else owns ports 80/443 on the server):
 
 ```bash
 docker compose --profile caddy up -d
 ```
 
-The site address in `Caddyfile` is fixed to `lcapps.langcen.cam.ac.uk` (it does not depend on the
-server's own hostname or any environment variable), serving `/academic-reading/` and `/academic-reading-eng/`. Caddy gets a
+The site address in `Caddyfile` is a fixed hostname (it does not depend on the server's own hostname
+or any environment variable) and serves `/academic-reading/` and `/academic-reading-eng/`. Edit it to your
+`<hostname>` before starting. Caddy gets a
 Let's Encrypt certificate automatically — that needs the host reachable from the internet
 on 80/443. If the University issues certificates instead, add `tls /path/cert.pem /path/key.pem`
 inside the site block and mount the files.
 
-**B. An existing nginx/Apache/Caddy on lcapps.** nginx equivalent:
+**B. An existing nginx/Apache/Caddy on the server.** nginx equivalent:
 
 ```nginx
 location = /academic-reading      { return 308 /academic-reading/; }
@@ -240,8 +241,8 @@ location /academic-reading/ {
 Keep the proxy timeout ≥ 180 s (gunicorn's `--timeout` is 180). Ollama Cloud latency
 varies a lot, from seconds to minutes.
 
-Final URLs: `https://lcapps.langcen.cam.ac.uk/academic-reading/` and
-`https://lcapps.langcen.cam.ac.uk/academic-reading-eng/`.
+Final URLs: `https://<hostname>/academic-reading/` and
+`https://<hostname>/academic-reading-eng/`.
 
 ## 6. Configuration reference (`.env`, one per app)
 
@@ -250,8 +251,8 @@ Final URLs: `https://lcapps.langcen.cam.ac.uk/academic-reading/` and
 | `SECRET_KEY` | Django secret. Keep the same value to preserve existing session cookies. |
 | `PUBLIC_PATH`, `FORCE_SCRIPT_NAME`, `STATIC_URL` | The sub-path (`/academic-reading/`, `/academic-reading-eng/`). Only change if you change the proxy path. |
 | `DJANGO_DEBUG` | `false` in production. |
-| `DJANGO_ALLOWED_HOSTS` | Must include the public hostname — **a wrong value gives HTTP 400.** Set to `lcapps…` in the delivered files. |
-| `DJANGO_CSRF_TRUSTED_ORIGINS` | `https://lcapps.langcen.cam.ac.uk`. Wrong value → form posts fail with 403. |
+| `DJANGO_ALLOWED_HOSTS` | Must include the public hostname — **a wrong value gives HTTP 400.** Set it to your `<hostname>`. |
+| `DJANGO_CSRF_TRUSTED_ORIGINS` | `https://<hostname>`. Wrong value → form posts fail with 403. |
 | `MARIADB_USER`, `MARIADB_PASSWORD`, `MARIADB_ROOT_PASSWORD` | Read by both the app and the MariaDB container. |
 | `DATABASE_URL` | `mysql://user:pass@<db service name>:3306/<db>`. Service names are fixed in `docker-compose.yml`. |
 | `OLLAMA_API_KEY` | Ollama Cloud key. |
@@ -266,7 +267,7 @@ the old ones — change them inside MariaDB too, or recreate the volume and re-i
 ## 7. Operations cheat-sheet
 
 ```bash
-cd /var/www/academic-reading
+cd <install-dir>
 docker compose ps
 docker compose logs -f academic-reading-eng            # or academic-reading
 docker compose up -d --build academic-reading-eng      # redeploy after code/config change
@@ -293,13 +294,12 @@ Git never holds secrets or data, so those are copied separately.
 ### First deployment
 
 ```bash
-# 1) Prerequisites: Docker + Compose plugin (section 2), DNS and 80/443 open for lcapps.langcen.cam.ac.uk.
+# 1) Prerequisites: Docker + Compose plugin (section 2), DNS and 80/443 open for <hostname>.
 #    Port 80/443 must be free for the bundled Caddy; otherwise use your own proxy (section 5, option B).
 
 # 2) Clone into place (the target folder must not already exist, or must be empty)
-sudo mkdir -p /var/www && sudo chown $USER /var/www
-git clone https://github.com/stc25/academic-reading.git /var/www/academic-reading
-cd /var/www/academic-reading
+git clone https://github.com/stc25/academic-reading.git <install-dir>
+cd <install-dir>
 
 # 3) Secrets: place the two .env files (from academic-reading-secrets.zip, sent over a secure channel)
 unzip -o ~/academic-reading-secrets.zip          # -> <app>/academic_reading_django/.env
@@ -315,8 +315,8 @@ docker compose --profile caddy up -d --build
 
 # 6) Check
 docker compose ps                                 # everything "healthy"
-curl -s -o /dev/null -w '%{http_code}\n' https://lcapps.langcen.cam.ac.uk/academic-reading/
-curl -s -o /dev/null -w '%{http_code}\n' https://lcapps.langcen.cam.ac.uk/academic-reading-eng/
+curl -s -o /dev/null -w '%{http_code}\n' https://<hostname>/academic-reading/
+curl -s -o /dev/null -w '%{http_code}\n' https://<hostname>/academic-reading-eng/
 ```
 
 The `--profile caddy` flag is what starts Caddy; without it only the apps and databases run
@@ -329,7 +329,7 @@ If the deploying user cannot run Docker, see "Running Docker without sudo" in se
 ### Updating after a change
 
 ```bash
-cd /var/www/academic-reading
+cd <install-dir>
 git pull
 docker compose --profile caddy up -d --build     # rebuilds only what changed, restarts those services
 ```
@@ -344,7 +344,7 @@ To redeploy one app only: `docker compose up -d --build academic-reading-eng` (o
 ### What stays out of git
 
 `.env` files, `*.sql` dumps, `backups/`, zips, `db.sqlite3`, `.django-venv/` and `staticfiles/` are in `.gitignore`.
-**Never commit `.env` or the SQL dumps** (secrets and reader history). Anything you edit on lcapps itself
+**Never commit `.env` or the SQL dumps** (secrets and reader history). Anything you edit on the server itself
 (for example `.env`) is untouched by `git pull`; local edits to tracked files can block it, so change code in
 the repo and pull rather than editing on the server.
 
