@@ -213,10 +213,63 @@ docker compose --profile caddy up -d
 
 The site address in `Caddyfile` is a fixed hostname (it does not depend on the server's own hostname
 or any environment variable) and serves `/academic-reading/` and `/academic-reading-eng/`. Edit it to your
-`<hostname>` before starting. Caddy gets a
+`<hostname>` before starting. By default Caddy gets a
 Let's Encrypt certificate automatically — that needs the host reachable from the internet
 on 80/443. If the University issues certificates instead, add `tls /path/cert.pem /path/key.pem`
-inside the site block and mount the files.
+inside the site block and mount the files. **On lcapps the University front end terminates TLS, so the
+Caddyfile uses a self-signed certificate instead** — see "TLS on lcapps" below.
+
+### TLS on lcapps (self-signed certificate behind the UIS front end)
+
+`lcapps.langcen.cam.ac.uk` resolves to `128.232.132.15`, a University (UIS) front end, which forwards to this
+server at `10.136.32.195`. UIS terminates the public TLS connection itself and only needs *something* listening
+on 443 here; it does not validate the backend certificate. Their guidance was: "just stick a self-signed cert
+on 443".
+
+**What went wrong first (2026-10-16).** The Caddyfile originally asked Let's Encrypt for a certificate. Caddy
+validates by fetching `http://lcapps.langcen.cam.ac.uk/.well-known/acme-challenge/...` on port 80, which goes
+through the front end; that request came back **HTTP 500**, and the TLS-ALPN fallback failed too
+(`Cannot negotiate ALPN protocol "acme-tls/1"`). So Caddy never obtained a certificate, retried for ~15 hours,
+and every HTTPS handshake to 443 failed with `tlsv1 alert internal error`. UIS's own
+`openssl s_client -connect 10.136.32.195:443` showed exactly that (and with no SNI, Caddy would not have
+served a certificate for the IP anyway).
+
+**The fix** (in `Caddyfile`): Caddy's built-in CA signs its own certificate, and a default SNI makes
+connections by IP (no server name) get a certificate too:
+
+```caddy
+{
+    default_sni lcapps.langcen.cam.ac.uk
+}
+
+lcapps.langcen.cam.ac.uk {
+    tls internal
+    ...
+}
+```
+
+Applied on the host with the Caddyfile edited **in place** (a rename-style edit, e.g. `sed -i`, can orphan the
+container's bind mount), then:
+
+```bash
+docker compose exec caddy caddy validate --config /etc/caddy/Caddyfile
+docker compose exec caddy caddy reload   --config /etc/caddy/Caddyfile
+```
+
+**Verify:**
+
+```bash
+# on the server: expect HTTP/2 200 and a cert issued by "Caddy Local Authority"
+curl -skI --resolve lcapps.langcen.cam.ac.uk:443:127.0.0.1 https://lcapps.langcen.cam.ac.uk/academic-reading/
+openssl s_client -connect 10.136.32.195:443 -servername lcapps.langcen.cam.ac.uk </dev/null 2>/dev/null | grep -E 'issuer=|Protocol'
+```
+
+`Verification error: unable to get local issuer certificate` is expected for a self-signed certificate.
+
+**Things to know.** Port 80 still redirects to HTTPS (308). The certificate lives in the `caddy_data` volume;
+deleting that volume just generates a new one (UIS isn't validating it, so nothing to tell them). If UIS ever stops
+terminating TLS and passes 443 straight through, remove `tls internal` and `default_sni` and get a real
+certificate (Let's Encrypt via a working port 80, or a University-issued one with `tls cert key`).
 
 **B. An existing nginx/Apache/Caddy on the server.** nginx equivalent:
 
@@ -277,6 +330,19 @@ docker compose up -d --build academic-reading-eng      # redeploy after code/con
 docker compose restart academic-reading                # restart only
 docker compose down                                    # stop (data volumes survive)
 ```
+
+### Create an admin (Django superuser)
+
+Run once per app, after the first deploy (it prompts for username, email and password):
+
+```bash
+docker compose exec academic-reading     python manage.py createsuperuser   # v1
+docker compose exec academic-reading-eng python manage.py createsuperuser   # v2
+```
+
+Then sign in at `https://<hostname>/academic-reading/django-admin/` (v1) or
+`https://<hostname>/academic-reading-eng/django-admin/` (v2). Superusers are created per app because each app
+has its own database. Admin sign-in, the allowlist and email accounts are covered in `docs/LOGIN.md`.
 
 Data lives in the Docker volumes `mariadb_academic_reading_data` and
 `mariadb_academic_reading_v1_data` — never run `docker compose down -v` unless you mean it.
@@ -360,6 +426,9 @@ without the compose stack. Use the combined repo above for deployment.
 
 - `db.sqlite3` files inside the app folders are stale local-dev leftovers; production uses MariaDB
   (selected whenever `DATABASE_URL` is set). Not shipped.
+- On lcapps, HTTPS to the backend uses a self-signed certificate behind the UIS front end (see "TLS on lcapps" in section 5).
+- The sign-in page doubles as the pre-login landing page (brand panel plus sign-in card, `accounts/templates/accounts/login.html`
+  and `reading/static/reading/css/login.css` in each app).
 - Sign-in (Entra SSO, email accounts) is built but **off by default**: setup and switch-over runbook in `docs/LOGIN.md`.
   Group-restricted texts are a separate, unbuilt plan (`docs/AUTH_AND_GROUPS.md`).
 - The shared reply cache is described in `docs/REPLY_CACHE.md`. It is stored in MariaDB (`reading_cachedreply`).

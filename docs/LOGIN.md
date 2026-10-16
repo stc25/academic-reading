@@ -40,8 +40,9 @@ either way. `?next=` redirects only follow same-host URLs.
    migrations (adds the auth, admin, social-auth and `AllowedLogin` tables, and a nullable `user` column on
    `ReadingSession`). Check the apps still work anonymously. *Take a database backup first* (`deploy/backup-db.sh`).
 2. **Create the first admin** in each app container:
-   `docker compose exec academic-reading python manage.py createsuperuser` (and the same for
-   `academic-reading-eng`). Admin is at `https://<hostname>/academic-reading/django-admin/` and
+   `docker compose exec academic-reading python manage.py createsuperuser` and
+   `docker compose exec academic-reading-eng python manage.py createsuperuser` (each prompts for a username,
+   email and password; one per app, since each has its own database). Admin is at `https://<hostname>/academic-reading/django-admin/` and
    `.../academic-reading-eng/django-admin/`.
 3. **Register the Entra apps** (one registration per app, type *Web*) with these redirect URIs, then put the
    client ID and secret in each app's `.env`:
