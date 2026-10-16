@@ -11,7 +11,7 @@ activities, from pre-reading to post-reading take-aways, with an AI tutor respon
 - **Academic Reading v2 (`-eng`)** — texts in any language, with the tutor replying in English throughout.
 
 Both are Django apps running in Docker with a MariaDB database each, using Ollama Cloud for the language
-models. Sign-in (University SSO and email accounts) is built in but switched off by default; see `docs/LOGIN.md`. This repository holds both apps plus the Docker Compose stack, Caddy reverse
+models. On the `auth` branch sign-in (University SSO and email accounts) is mandatory and the library is group-aware; see `docs/LOGIN.md`. This repository holds both apps plus the Docker Compose stack, Caddy reverse
 proxy configuration and scripts needed to run them together, and this document explains how to deploy them.
 
 **Target:** any Linux server with Docker and the Compose plugin (written for Ubuntu 24.04), with the project
@@ -310,7 +310,7 @@ Final URLs: `https://<hostname>/academic-reading/` and
 | `DATABASE_URL` | `mysql://user:pass@<db service name>:3306/<db>`. Service names are fixed in `docker-compose.yml`. |
 | `OLLAMA_API_KEY` | Ollama Cloud key. |
 
-Sign-in settings (`AUTH_REQUIRED`, `AZURE_CLIENT_ID`/`AZURE_CLIENT_SECRET`, `EMAIL_*`) are documented in
+Sign-in settings (`AZURE_CLIENT_ID`/`AZURE_CLIENT_SECRET`, `EMAIL_*`, `LIBRARY_SOURCE`) are documented in
 `docs/LOGIN.md` and listed, all defaulting to off, in each app's `.env.production.example`.
 
 Model names and per-language routing live in each app's `config.yaml` (baked into the image;
@@ -429,8 +429,8 @@ without the compose stack. Use the combined repo above for deployment.
 - On lcapps, HTTPS to the backend uses a self-signed certificate behind the UIS front end (see "TLS on lcapps" in section 5).
 - The sign-in page doubles as the pre-login landing page (brand panel plus sign-in card, `accounts/templates/accounts/login.html`
   and `reading/static/reading/css/login.css` in each app).
-- Sign-in (Entra SSO, email accounts) is built but **off by default**: setup and switch-over runbook in `docs/LOGIN.md`.
-  Group-restricted texts are a separate, unbuilt plan (`docs/AUTH_AND_GROUPS.md`).
+- Sign-in (Entra SSO, email accounts) is **mandatory** on the `auth` branch, and library texts can be limited to groups: setup, groups and runbook in `docs/LOGIN.md`.
+  The design history is in `docs/AUTH_AND_GROUPS.md` and `docs/superpowers/specs/`.
 - The shared reply cache is described in `docs/REPLY_CACHE.md`. It is stored in MariaDB (`reading_cachedreply`).
 - Session cookies are named `arm_sessionid` / `arm_csrftoken` (v1) and `are_sessionid` / `are_csrftoken` (v2), scoped to the app path — moving host
   logs readers out once, which is harmless.

@@ -7,6 +7,7 @@ from django.urls import reverse
 from io import StringIO
 
 from reading.models import ActivityTurn, CachedReply, ReadingSession
+from reading.tests.helpers import prepare_reader, signed_in_client
 
 
 SRC = "marx"
@@ -32,6 +33,7 @@ def fake_stream(pieces=("Hello ", "world.")):
 @override_settings(STORAGES=STATIC_OK)
 class CacheTests(TestCase):
     def setUp(self):
+        prepare_reader(self)
         self.client.get(reverse("reading:open", kwargs={"source_ref": "marx"}))
         self.session = ReadingSession.objects.get()
 
@@ -52,7 +54,7 @@ class CacheTests(TestCase):
     def test_second_reader_gets_cached_reply_without_llm_call(self):
         self.generate()
         # a different browser opens the same library text
-        other = self.client_class()
+        other = signed_in_client()
         other.get(reverse("reading:open", kwargs={"source_ref": "marx"}))
         other_session = ReadingSession.objects.exclude(pk=self.session.pk).get()
         url = reverse("reading:generate", kwargs={"pk": other_session.pk, "activity_id": "pre_reading"})
@@ -78,7 +80,7 @@ class CacheTests(TestCase):
 
     def test_cached_hit_also_blocks_a_second_generate(self):
         self.generate()
-        other = self.client_class()
+        other = signed_in_client()
         other.get(reverse("reading:open", kwargs={"source_ref": SRC}))
         sess = ReadingSession.objects.exclude(pk=self.session.pk).get()
         url = reverse("reading:generate", kwargs={"pk": sess.pk, "activity_id": "pre_reading"})
@@ -100,7 +102,7 @@ class CacheTests(TestCase):
 
     def test_different_level_does_not_share_an_entry(self):
         self.generate()
-        other = self.client_class()
+        other = signed_in_client()
         other.get(reverse("reading:open", kwargs={"source_ref": "marx"}))
         other_session = ReadingSession.objects.exclude(pk=self.session.pk).get()
         ReadingSession.objects.filter(pk=other_session.pk).update(level_id="introductory")
@@ -119,7 +121,7 @@ class CacheTests(TestCase):
             prompts = {**prompts, "shared": {**prompts["shared"], "system": prompts["shared"]["system"] + "\nEXTRA RULE"}}
             lp.return_value = prompts
             stream = fake_stream(("New prompt output",))
-            other = self.client_class()
+            other = signed_in_client()
             other.get(reverse("reading:open", kwargs={"source_ref": SRC}))
             sess = ReadingSession.objects.exclude(pk=self.session.pk).get()
             url = reverse("reading:generate", kwargs={"pk": sess.pk, "activity_id": "pre_reading"})
@@ -128,7 +130,7 @@ class CacheTests(TestCase):
         self.assertEqual(body, "New prompt output")
 
     def test_uploaded_texts_are_never_cached(self):
-        other = self.client_class()
+        other = signed_in_client()
         other.post(reverse("reading:upload"), {
             "file": SimpleUploadedFile("mine.txt", ("Das ist mein eigener deutscher Text. " * 10).encode()),
             "language": "de"})
@@ -193,6 +195,7 @@ class ClearCommandTests(TestCase):
 @override_settings(STORAGES=STATIC_OK)
 class GenerateButtonTests(TestCase):
     def setUp(self):
+        prepare_reader(self)
         self.client.get(reverse("reading:open", kwargs={"source_ref": SRC}))
         self.session = ReadingSession.objects.get()
 
@@ -224,6 +227,7 @@ class GenerateButtonTests(TestCase):
 @override_settings(STORAGES=STATIC_OK)
 class KeepPositionScriptTests(TestCase):
     def test_activity_page_loads_the_keep_position_script_before_generate_js(self):
+        prepare_reader(self)
         self.client.get(reverse("reading:open", kwargs={"source_ref": SRC}))
         session = ReadingSession.objects.get()
         page = self.client.get(reverse("reading:activity", kwargs={"pk": session.pk, "activity_id": "pre_reading"}))

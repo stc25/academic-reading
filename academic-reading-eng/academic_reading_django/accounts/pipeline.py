@@ -12,6 +12,8 @@ try:  # social-auth-core 6.x renamed AuthForbidden
 except ImportError:  # pragma: no cover
     from social_core.exceptions import AuthPolicyError as AuthForbidden
 
+from django.contrib.auth.models import Group
+
 from .login_report import report_login
 from .models import AllowedLogin
 
@@ -56,3 +58,15 @@ def finish_login(strategy, details, backend, user=None, allowed_entries=None, *a
         specific.save(update_fields=["matched_user"])
 
     report_login(email or user.email, "sso")
+
+
+def sync_groups(strategy, details, backend, user=None, allowed_entries=None, *args, **kwargs):
+    """Add the person to the groups of every allowlist entry that matched them.
+
+    Runs at every sign-in. Additive only: a group an admin set by hand is never removed.
+    """
+    if user is None or not allowed_entries:
+        return
+    groups = Group.objects.filter(allowed_logins__pk__in=allowed_entries).distinct()
+    if groups:
+        user.groups.add(*groups)

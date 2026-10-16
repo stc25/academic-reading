@@ -2,7 +2,7 @@
 
 A reading-skills tutor for academic texts in **any language**. Everything the app says is in
 **English**, whatever the text is written in. The reader picks a text and works through ten
-guided activities; the tutor is an LLM (Ollama Cloud) prompted per activity. Sign-in is optional and off by default (see below).
+guided activities; the tutor is an LLM (Ollama Cloud) prompted per activity. Readers must sign in (see below).
 
 Live path: `/academic-reading-eng/`. Sibling app: [`academic-reading`](../academic-reading/)
 (v1, four languages, level and reply language chosen by the reader).
@@ -50,11 +50,10 @@ The ten activities and the two-column layout are the same.
 - Two-column layout, with replies streaming in as they are written.
 - **History** page of every text worked on, with activities tried and attempt counts; **Reset** clears one text's history.
 - Light and dark theme (follows the OS, remembered per browser).
-- **Anonymous by default:** a browser cookie (`are_sessionid`, one year) keeps a reader's work between visits.
-- **Optional sign-in (off by default):** with `AUTH_REQUIRED=true` readers must sign in with University Microsoft
-  (Entra ID) SSO, restricted to an admin-managed allowlist, or with an admin-created email + password account for
-  people outside Cambridge. History then belongs to the account and follows it across devices. Admin site at
-  `/django-admin/`. Setup and switch-over runbook: [`docs/LOGIN.md`](../docs/LOGIN.md).
+- **Sign-in is mandatory (auth branch):** readers sign in with University Microsoft (Entra ID) SSO, restricted to an
+  admin-managed allowlist, or with an admin-created email + password account for people outside Cambridge. History
+  belongs to the account and follows it across devices. The library lives in the admin: each text can be limited to
+  groups, and a group can be marked "sees every text". Admin site at `/django-admin/`. Setup, groups and runbook: [`docs/LOGIN.md`](../docs/LOGIN.md).
 
 ## Behaviour worth knowing
 

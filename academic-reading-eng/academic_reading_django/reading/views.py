@@ -1,6 +1,6 @@
 """Views for the reading app.
 
-Server-rendered. History is session-scoped (anonymous) or per-user (AUTH_REQUIRED). The reading logic itself
+Server-rendered. History is per signed-in user. The reading logic itself
 (corpus/prompts/annotate/languages/llm) is ported nearly verbatim from the
 original Streamlit app's lib/ package into reading/logic/ — see that
 package for the real work; these views are mostly plumbing between it and
@@ -11,7 +11,6 @@ from __future__ import annotations
 
 import hashlib
 
-from django.conf import settings
 from django.contrib import messages
 from django.http import Http404, HttpResponseBadRequest, StreamingHttpResponse
 from django.db.models import F
@@ -22,13 +21,13 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_POST
 
 from .logic.annotate import body_html, locate_notes, notes_markdown, parse_notes
-from .logic.corpus import Text, load_library, text_from_upload
+from .logic.corpus import Text, text_from_upload
 from .logic.languages import resolve
 from .logic.llm import LLMError, stream_reply
 from .logic.prompts import available_templates, build_brief, build_messages, load_prompts
 from .logic.settings import Activity, Config, load_config
 from .markdown_utils import render_markdown
-from accounts.context_processors import sign_in_available
+from .access import can_open, library_for, visible_sessions
 from .models import ActivityTurn, CachedReply, ReadingSession
 
 
@@ -48,21 +47,19 @@ def _ensure_session_key(request) -> str:
 
 def _owner(request) -> dict:
     """The ReadingSession filter identifying whose history this is."""
-    if settings.AUTH_REQUIRED:
-        return {"user": request.user}
-    return {"session_key": _session_key(request)}
+    return {"user": request.user}
 
 
 def _owner_lookup(request) -> tuple[dict, dict]:
     """(get_or_create lookup, extra defaults) for creating a ReadingSession."""
-    key = _ensure_session_key(request)
-    if settings.AUTH_REQUIRED:
-        return {"user": request.user}, {"session_key": key}
-    return {"session_key": key}, {}
+    return {"user": request.user}, {"session_key": _ensure_session_key(request)}
 
 
 def _get_session(request, pk: int) -> ReadingSession:
-    return get_object_or_404(ReadingSession, pk=pk, **_owner(request))
+    session = get_object_or_404(ReadingSession, pk=pk, **_owner(request))
+    if not can_open(request.user, session):
+        raise Http404("Text not available.")
+    return session
 
 
 def _get_activity(activity_id: str, config: Config) -> Activity:
@@ -93,17 +90,13 @@ def _session_to_text(session: ReadingSession) -> Text:
 # Library / upload
 # --------------------------------------------------------------------------- #
 def home_view(request):
-    # Front door: when a sign-in method is configured, anonymous visitors land on the sign-in page.
-    # (With none configured the login page would be a dead end, so the library stays open.)
-    if not request.user.is_authenticated and sign_in_available():
-        return redirect("accounts:login")
     config = _config()
-    texts, problems = load_library(config)
+    texts, problems = library_for(request.user, config)
     languages = sorted({t.language_name for t in texts})
 
-    history = []
-    if settings.AUTH_REQUIRED or _session_key(request):
-        history = list(ReadingSession.objects.filter(**_owner(request)).order_by("-created_at"))
+    history = visible_sessions(
+        request.user, ReadingSession.objects.filter(**_owner(request)).order_by("-created_at")
+    )
 
     return render(
         request,
@@ -119,7 +112,7 @@ def home_view(request):
 
 def open_view(request, source_ref: str):
     config = _config()
-    texts, _ = load_library(config)
+    texts, _ = library_for(request.user, config)
     text = next((t for t in texts if t.id == source_ref), None)
     if text is None:
         raise Http404("Text not found.")
@@ -386,19 +379,17 @@ def history_view(request):
     labels = {a.id: a.label for a in config.activities}
 
     sessions_data = []
-    if settings.AUTH_REQUIRED or _session_key(request):
-        sessions = (
-            ReadingSession.objects.filter(**_owner(request))
-            .prefetch_related("turns")
-            .order_by("-created_at")
-        )
-        for session in sessions:
-            activities: dict[str, dict] = {}
-            for turn in session.turns.all():  # already ordered -created_at
-                entry = activities.setdefault(
-                    turn.activity_id, {"label": labels.get(turn.activity_id, turn.activity_id), "count": 0, "latest": turn.created_at}
-                )
-                entry["count"] += 1
-            sessions_data.append({"session": session, "activities": activities.values()})
+    sessions = visible_sessions(
+        request.user,
+        ReadingSession.objects.filter(**_owner(request)).prefetch_related("turns").order_by("-created_at"),
+    )
+    for session in sessions:
+        activities: dict[str, dict] = {}
+        for turn in session.turns.all():  # already ordered -created_at
+            entry = activities.setdefault(
+                turn.activity_id, {"label": labels.get(turn.activity_id, turn.activity_id), "count": 0, "latest": turn.created_at}
+            )
+            entry["count"] += 1
+        sessions_data.append({"session": session, "activities": activities.values()})
 
     return render(request, "reading/history.html", {"sessions_data": sessions_data})

@@ -12,17 +12,17 @@ to `academic-reading` (v1) and `academic-reading-eng` (v2).
 > **Update:** the login part of this plan (SSO + email accounts + auth gate + per-user history) is built for both apps
 > on the `auth` branch and documented in `docs/LOGIN.md`. Groups and the database-managed library below remain unbuilt.
 
-## Status (2026-10-14)
+## Status (2026-10-16, `auth` branch only)
 
 | Step | v1 `academic-reading` | v2 `academic-reading-eng` |
 |---|---|---|
-| Design/spec | approved 2026-10-14 | same spec |
-| Implementation plan | written, awaiting review (`superpowers/plans/2026-10-14-auth-and-groups-v1.md`) | after v1 is built |
-| Built | no | no |
-| Deployed dormant | no | no |
-| Switched on (`AUTH_REQUIRED=true`) | no | no |
+| Design/spec | `specs/2026-10-14-auth-and-groups-design.md`, superseded in part by `specs/2026-10-16-groups-and-library-design.md` | same |
+| Sign-in (SSO + email, allowlist, per-user history) | built, deployed on lcapps | built, deployed on lcapps |
+| Groups + group-restricted database library | **built** on `feature/groups-library` (126 tests) | **built** on `feature/groups-library` (128 tests) |
+| Deployed on lcapps | no | no |
 
-No application code has been changed yet. Both apps are live and anonymous.
+The live `cnlp` apps run `main` and are not touched. Anonymous mode is retired on this branch: sign-in is mandatory
+and signed-out visitors see no texts. How to use groups: `docs/LOGIN.md`, section "Groups and texts".
 
 ## Decisions so far
 
@@ -50,5 +50,7 @@ No application code has been changed yet. Both apps are live and anonymous.
 
 ## Build log
 
-_Nothing built yet. Entries are added here as each step is implemented,
-including deployment commands, migrations run, and verification results._
+- 2026-10-16: groups and the database library built for v1 then v2 (`LibraryText`, `reading.access`, `GroupAccess`,
+  `AllowedLogin.groups` synced at login, `import_library`, admin with bulk actions, mandatory sign-in with a 503 page
+  when no sign-in method is configured). Not yet deployed. Deploy: pull, `docker compose up -d --build`, then
+  `docker compose exec <app> python manage.py import_library --check`.

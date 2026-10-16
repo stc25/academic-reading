@@ -1,6 +1,6 @@
 # Groups and database library — design spec
 
-Date: 2026-10-16. Status: **draft, awaiting review**.
+Date: 2026-10-16. Status: **implemented on `feature/groups-library`** (deviations listed in section 8).
 Applies to the **`auth` branch only** (combined repo `stc25/academic-reading`). The live `cnlp` apps run `main`,
 stay anonymous and are not touched. Build v1 (`academic-reading`) first, then v2 (`academic-reading-eng`).
 
@@ -157,3 +157,16 @@ Both apps. Django `TestCase`, SQLite, run as in `docs/LOGIN.md`.
   group has anything to restrict.
 - Rolling back: there is no variable to restore anonymous access. Fallbacks are `LIBRARY_SOURCE=files` and
   reverting the release.
+
+## 8. Deviations made while building
+
+- **Import:** `import_library` creates missing texts and leaves existing rows alone (it is not update-or-create).
+  `--if-empty` (used by the container entrypoint) imports only into an empty library, so admin edits survive restarts and
+  deleted texts do not come back; `--update` refreshes content fields of existing rows (never groups or active);
+  `--check` compares database and files. The entrypoint runs the import automatically on first start, so there is no
+  window with an empty library.
+- **v2 fields:** the admin-editable `language` (blank = detect) and `level` (blank = app default); `lang`, `language_name`
+  and `script` are derived on every save. `LibraryText.level` holds the text's own level value as `source.cfg` does.
+- **Per-user uniqueness:** a conditional unique constraint on `(user, source_ref)` was added; MariaDB cannot enforce
+  conditional constraints, so there it is skipped (the views already use `get_or_create` per user).
+- **Group admin:** the Group page shows a "sees every text" tick (inline `GroupAccess`), plus counts of limited texts and users.
