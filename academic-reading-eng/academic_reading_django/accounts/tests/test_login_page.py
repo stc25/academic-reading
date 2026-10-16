@@ -19,6 +19,7 @@ class LoginLandingPageTests(TestCase):
     )
     def test_sso_button_shown_when_configured(self):
         self.assertContains(self._get(), "Sign in with Cambridge (Microsoft)")
+        self.assertContains(self._get(), 'class="ms-logo"')
 
     @override_settings(
         SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_KEY="",

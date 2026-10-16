@@ -48,6 +48,17 @@
   border-radius: var(--radius-sm);
   font: inherit;
 }
+
+/* Microsoft sign-in button: official four-square logo, always white so the logo colours read in dark mode too. */
+.btn-microsoft {
+  gap: var(--space-8);
+  background: #ffffff;
+  color: #1f2937;
+  border: 2px solid #8a8886;
+}
+.btn-microsoft:hover { background: #ffffff; border-color: var(--colour-blue-600); }
+.ms-logo { width: 1.25rem; height: 1.25rem; flex: none; }
+
 @media (max-width: 767px) {
   .auth-shell { grid-template-columns: minmax(0, 1fr); gap: var(--space-20); margin-top: 0; }
   .auth-panel, .auth-card { padding: var(--space-24); }
