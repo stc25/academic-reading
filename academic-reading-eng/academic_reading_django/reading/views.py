@@ -28,6 +28,7 @@ from .logic.llm import LLMError, stream_reply
 from .logic.prompts import available_templates, build_brief, build_messages, load_prompts
 from .logic.settings import Activity, Config, load_config
 from .markdown_utils import render_markdown
+from accounts.context_processors import sign_in_available
 from .models import ActivityTurn, CachedReply, ReadingSession
 
 
@@ -92,6 +93,10 @@ def _session_to_text(session: ReadingSession) -> Text:
 # Library / upload
 # --------------------------------------------------------------------------- #
 def home_view(request):
+    # Front door: when a sign-in method is configured, anonymous visitors land on the sign-in page.
+    # (With none configured the login page would be a dead end, so the library stays open.)
+    if not request.user.is_authenticated and sign_in_available():
+        return redirect("accounts:login")
     config = _config()
     texts, problems = load_library(config)
     languages = sorted({t.language_name for t in texts})

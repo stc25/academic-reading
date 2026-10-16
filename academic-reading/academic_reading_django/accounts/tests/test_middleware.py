@@ -31,7 +31,7 @@ class AuthGateTests(TestCase):
         self.assertEqual(self.client.get(reverse("reading:home")).status_code, 200)
 
 
-@override_settings(AUTH_REQUIRED=False)
+@override_settings(AUTH_REQUIRED=False, SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_KEY="", SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_SECRET="", EMAIL_PASSWORD_LOGIN_ENABLED=False)
 class DormantGateTests(TestCase):
     def test_anonymous_passes_when_switch_is_off(self):
         self.assertEqual(self.client.get(reverse("reading:home")).status_code, 200)

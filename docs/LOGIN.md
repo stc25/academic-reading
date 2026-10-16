@@ -61,6 +61,11 @@ either way. `?next=` redirects only follow same-host URLs.
 
 ## Things to know
 
+- **Front door.** Visiting `/academic-reading/` or `/academic-reading-eng/` while signed out redirects to that app's
+  `auth/login/` page whenever a sign-in method is configured (Microsoft keys set, or `EMAIL_PASSWORD_LOGIN_ENABLED=true`).
+  This is independent of `AUTH_REQUIRED`: with it off, deep links such as `/read/<id>/` and uploads still work
+  anonymously, so set `AUTH_REQUIRED=true` to gate everything. With no sign-in method configured the library stays open,
+  because the login page would otherwise be a dead end.
 - **Anonymous history is not carried over.** It can't be attributed to a person, so once sign-in is on,
   earlier anonymous history is unreachable (the rows stay in the database).
 - **Sign-in begins with a POST.** Current `social-auth-app-django` only accepts POST to start SSO, so the
