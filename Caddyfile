@@ -1,4 +1,10 @@
+{
+    # UIS front end terminates public TLS; backend just needs a self-signed cert on 443.
+    default_sni lcapps.langcen.cam.ac.uk
+}
+
 lcapps.langcen.cam.ac.uk {
+    tls internal
     encode gzip
 
     redir /academic-reading-eng /academic-reading-eng/ 308
