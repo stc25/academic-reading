@@ -18,7 +18,7 @@ class LoginLandingPageTests(TestCase):
         SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_SECRET="secret",
     )
     def test_sso_button_shown_when_configured(self):
-        self.assertContains(self._get(), "Sign in with Cambridge (Microsoft)")
+        self.assertContains(self._get(), "Sign in with Cambridge University account")
         self.assertContains(self._get(), 'class="ms-logo"')
 
     @override_settings(
@@ -27,7 +27,7 @@ class LoginLandingPageTests(TestCase):
     )
     def test_sso_unavailable_message_when_not_configured(self):
         response = self._get()
-        self.assertNotContains(response, "Sign in with Cambridge (Microsoft)")
+        self.assertNotContains(response, "Sign in with Cambridge University account")
         self.assertContains(response, "Cambridge sign-in is not yet available.")
 
     @override_settings(EMAIL_PASSWORD_LOGIN_ENABLED=True)
