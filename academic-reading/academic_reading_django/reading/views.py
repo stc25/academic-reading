@@ -25,7 +25,7 @@ from .logic.llm import LLMError, stream_reply
 from .logic.prompts import available_templates, build_brief, build_messages, load_prompts
 from .logic.settings import Activity, Config, load_config
 from .markdown_utils import render_markdown
-from .access import can_open, library_for, visible_sessions
+from .access import can_open, library_for, sees_every_text, visible_sessions
 from .models import ActivityTurn, CachedReply, ReadingSession
 
 
@@ -126,7 +126,13 @@ def home_view(request):
     return render(
         request,
         "reading/home.html",
-        {"groups": groups, "history": history, "lang_names": LANG_NAMES},
+        {
+            "groups": groups,
+            "history": history,
+            "lang_names": LANG_NAMES,
+            # Search and the language filter are for people who can see every text.
+            "can_search": sees_every_text(request.user),
+        },
     )
 
 

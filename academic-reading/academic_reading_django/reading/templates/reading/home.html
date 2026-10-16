@@ -2,6 +2,7 @@
 {% load static %}
 {% block title %}Library{% endblock %}
 {% block subheader %}
+{% if can_search %}
 <div class="library-bar" id="library-bar" role="search" hidden>
   <div class="wrap">
     <label class="sr-only" for="library-search">Search the library by title, author, topic or language</label>
@@ -11,6 +12,7 @@
     <span id="library-status" class="sr-only" role="status" aria-live="polite"></span>
   </div>
 </div>
+{% endif %}
 {% endblock %}
 {% block content %}
 
@@ -34,7 +36,24 @@
   </div>
 {% endif %}
 
-<h2>Upload your own</h2>
+<div class="upload-heading">
+  <h2>Upload your own</h2>
+  <details class="info-tip">
+    <summary aria-label="What kind of file can I upload?" title="What kind of file can I upload?"><span aria-hidden="true">i</span></summary>
+    <div class="info-tip__panel" role="note">
+      <p><strong>What you can upload</strong></p>
+      <ul>
+        <li><strong>File type:</strong> plain text (<code>.txt</code>) or Markdown (<code>.md</code>, <code>.markdown</code>).
+          Word and PDF files are not supported &mdash; copy the text into a <code>.txt</code> file first.</li>
+        <li><strong>Format:</strong> one passage of prose, saved as UTF-8 text. Markdown formatting (headings, bold, links)
+          is removed; images and code blocks are dropped.</li>
+        <li><strong>Title:</strong> taken from the file name.</li>
+        <li><strong>Language:</strong> German, French, Italian or Chinese. It is detected from the text; if that fails, choose it from the list.</li>
+        <li><strong>Privacy:</strong> an uploaded text is private to you.</li>
+      </ul>
+    </div>
+  </details>
+</div>
 <form class="upload-form" action="{% url 'reading:upload' %}" method="post" enctype="multipart/form-data">
   {% csrf_token %}
   <div>

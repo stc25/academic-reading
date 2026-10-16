@@ -69,6 +69,11 @@ Groups limit which signed-in readers can open which library text. Everything is 
 3. Everyone else: active texts with **no groups**, plus active texts limited to one of their groups. A person in
    several groups gets the union. A text no one can see returns 404 even at a guessed URL, and drops out of their history.
 
+**Library search.** The search box and language filter on the library page are shown only to people who can see every text
+(staff, superusers, and members of a group with **Sees every text** ticked). Everyone else sees just their own texts, so
+there is nothing to search through. The upload box has an **i** icon beside its heading that explains the accepted file
+type and format before anyone uploads.
+
 **Set it up**
 - **Create groups:** Authentication and Authorization -> Groups -> Add. Tick **Sees every text** on the group's page for
   groups like *Technical*.
@@ -119,7 +124,7 @@ From either app's `academic_reading_django/` directory (SQLite is used when `DAT
 DATABASE_URL= PUBLIC_PATH= FORCE_SCRIPT_NAME= STATIC_URL=/static/ python manage.py test accounts reading
 ```
 
-v1: 133 tests, v2: 135. They cover allowlist matching, the pipeline and group syncing at login, login/logout/throttle/redirect
+v1: 139 tests, v2: 141. They cover allowlist matching, the pipeline and group syncing at login, login/logout/throttle/redirect
 safety, set-password link single use, admin invite and resend, the always-on gate (and the 503 page), per-user history
 isolation, the SSO start URL, the who-sees-what matrix, hidden-text 404s on every route, `import_library`, and the
 library admin (paste/upload, bulk actions). Run inside the container image they also include one SSO test
