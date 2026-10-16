@@ -25,7 +25,7 @@
       <form method="post" action="{% url 'social:begin' 'azuread-tenant-oauth2' %}">
         {% csrf_token %}
         <input type="hidden" name="next" value="{{ next }}">
-        <button type="submit" class="btn btn-microsoft btn-block"><svg viewBox="0 0 23 23" class="ms-logo" aria-hidden="true" focusable="false"><path fill="#f25022" d="M1 1h10v10H1z"/><path fill="#7fba00" d="M12 1h10v10H12z"/><path fill="#00a4ef" d="M1 12h10v10H1z"/><path fill="#ffb900" d="M12 12h10v10H12z"/></svg>Sign in with Cambridge University account</button>
+        <button type="submit" class="btn btn-microsoft btn-block"><svg viewBox="0 0 23 23" class="ms-logo" aria-hidden="true" focusable="false"><path fill="#f25022" d="M1 1h10v10H1z"/><path fill="#7fba00" d="M12 1h10v10H12z"/><path fill="#00a4ef" d="M1 12h10v10H1z"/><path fill="#ffb900" d="M12 12h10v10H12z"/></svg><span class="ms-text">Sign in with Cambridge <span class="ms-sub">University account</span></span></button>
       </form>
       <p class="auth-note">Recommended: use your University of Cambridge (cam.ac.uk) account.</p>
     {% else %}
