@@ -1,8 +1,7 @@
 """Django settings for the academic_reading_django project.
 
-Sign-in is optional: with AUTH_REQUIRED unset every reader is anonymous and
-scoped to their Django session cookie; with it set, readers sign in (Entra SSO
-or admin-created email accounts) and their history belongs to their account. The reading logic itself (corpus/prompts/annotate/languages/
+Sign-in is mandatory (Entra SSO or admin-created email accounts): history belongs to
+the reader's account and library texts are shown according to the reader's groups. The reading logic itself (corpus/prompts/annotate/languages/
 llm) lives in reading/logic/, ported from the original Streamlit app's lib/
 package.
 """
@@ -46,9 +45,11 @@ def _flag(name: str) -> bool:
     return os.getenv(name, "false").strip().lower() in ("1", "true", "yes", "on")
 
 
-# ── Feature switches (everything ships dormant) ─────────────────────────────
-AUTH_REQUIRED = _flag("AUTH_REQUIRED")
+# ── Feature switches ─────────────────────────────────────────────────────────
 EMAIL_PASSWORD_LOGIN_ENABLED = _flag("EMAIL_PASSWORD_LOGIN_ENABLED")
+# Where the library comes from: "db" (LibraryText rows, group-aware) or "files" (the bundled files,
+# every text ungrouped). Fallback only; see docs/LOGIN.md.
+LIBRARY_SOURCE = os.getenv("LIBRARY_SOURCE", "db").strip().lower()
 
 INSTALLED_APPS = [
     # "unfold" must precede "django.contrib.admin" so its templates win.
@@ -190,6 +191,7 @@ SOCIAL_AUTH_PIPELINE = (
     "social_core.pipeline.social_auth.load_extra_data",
     "social_core.pipeline.user.user_details",
     "accounts.pipeline.finish_login",
+    "accounts.pipeline.sync_groups",
 )
 SOCIAL_AUTH_LOGIN_ERROR_URL = "accounts:login"
 SOCIAL_AUTH_RAISE_EXCEPTIONS = False

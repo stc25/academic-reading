@@ -3,7 +3,7 @@ from django.test import TestCase, override_settings
 from django.urls import reverse
 
 
-@override_settings(AUTH_REQUIRED=True)
+@override_settings(EMAIL_PASSWORD_LOGIN_ENABLED=True)
 class AuthGateTests(TestCase):
     def test_anonymous_is_redirected_to_login_with_next(self):
         response = self.client.get(reverse("reading:home"))
@@ -31,7 +31,16 @@ class AuthGateTests(TestCase):
         self.assertEqual(self.client.get(reverse("reading:home")).status_code, 200)
 
 
-@override_settings(AUTH_REQUIRED=False, SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_KEY="", SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_SECRET="", EMAIL_PASSWORD_LOGIN_ENABLED=False)
-class DormantGateTests(TestCase):
-    def test_anonymous_passes_when_switch_is_off(self):
-        self.assertEqual(self.client.get(reverse("reading:home")).status_code, 200)
+@override_settings(
+    SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_KEY="", SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_SECRET="",
+    EMAIL_PASSWORD_LOGIN_ENABLED=False,
+)
+class NoSignInMethodTests(TestCase):
+    def test_anonymous_gets_a_clear_503_instead_of_a_dead_end_login(self):
+        response = self.client.get(reverse("reading:home"))
+        self.assertEqual(response.status_code, 503)
+        self.assertContains(response, "Sign-in is not set up", status_code=503)
+
+    def test_health_and_login_page_still_open(self):
+        self.assertEqual(self.client.get("/health/").status_code, 200)
+        self.assertEqual(self.client.get(reverse("accounts:login")).status_code, 200)

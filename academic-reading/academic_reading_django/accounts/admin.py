@@ -5,10 +5,10 @@ from django.contrib.auth.admin import GroupAdmin as BaseGroupAdmin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import Group, User
 from django.db import transaction
-from unfold.admin import ModelAdmin
+from unfold.admin import ModelAdmin, StackedInline
 from unfold.forms import AdminPasswordChangeForm, UserChangeForm
 
-from .models import AllowedLogin
+from .models import AllowedLogin, GroupAccess
 from .services import send_account_created_email
 
 admin.site.unregister(User)
@@ -65,12 +65,39 @@ class UserAdmin(BaseUserAdmin, ModelAdmin):
         self.message_user(request, "Set-password emails sent.")
 
 
+class GroupAccessInline(StackedInline):
+    model = GroupAccess
+    max_num = 1
+    can_delete = False
+    verbose_name = "Text access"
+    verbose_name_plural = "Text access"
+
+
 @admin.register(Group)
 class GroupAdmin(BaseGroupAdmin, ModelAdmin):
-    pass
+    inlines = [GroupAccessInline]
+    list_display = ("name", "sees_all_texts", "text_count", "user_count")
+
+    @admin.display(boolean=True, description="Sees every text")
+    def sees_all_texts(self, obj):
+        access = getattr(obj, "access", None)
+        return bool(access and access.sees_all_texts)
+
+    @admin.display(description="Texts limited to this group")
+    def text_count(self, obj):
+        return obj.library_texts.count()
+
+    @admin.display(description="Users")
+    def user_count(self, obj):
+        return obj.user_set.count()
 
 
 @admin.register(AllowedLogin)
 class AllowedLoginAdmin(ModelAdmin):
-    list_display = ("identifier", "matched_user", "created_at")
+    list_display = ("identifier", "matched_user", "group_names", "created_at")
     search_fields = ("identifier",)
+    filter_horizontal = ("groups",)
+
+    @admin.display(description="Groups")
+    def group_names(self, obj):
+        return ", ".join(g.name for g in obj.groups.all()) or "-"

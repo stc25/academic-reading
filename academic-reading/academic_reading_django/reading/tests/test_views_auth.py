@@ -1,16 +1,15 @@
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.test import TestCase, override_settings
+from django.test import TestCase
 from django.urls import reverse
 
 from reading.models import ReadingSession
+from reading.tests.helpers import prepare_reader
 
 
-@override_settings(AUTH_REQUIRED=True)
 class OwnerScopedHistoryTests(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user("a@x.org", "a@x.org")
-        self.client.force_login(self.user)
+        prepare_reader(self)
 
     def _open(self, ref="de-01"):
         return self.client.get(reverse("reading:open", kwargs={"source_ref": ref}))

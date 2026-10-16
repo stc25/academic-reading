@@ -15,7 +15,6 @@ def sign_in_available():
 
 def auth_flags(request):
     return {
-        "auth_required": settings.AUTH_REQUIRED,
         "sso_enabled": sso_enabled(),
         "password_login_enabled": settings.EMAIL_PASSWORD_LOGIN_ENABLED,
     }

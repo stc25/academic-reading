@@ -19,6 +19,9 @@ else
   python /app/manage.py migrate --noinput
 fi
 
+# First start only: load the bundled library into the database (no-op once it has texts).
+python /app/manage.py import_library --if-empty
+
 # Collect static files so whitenoise can serve them with DEBUG=false.
 python /app/manage.py collectstatic --noinput
 

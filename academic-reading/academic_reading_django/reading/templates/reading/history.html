@@ -3,8 +3,7 @@
 {% block content %}
 
 <h1>History</h1>
-<p class="callout">{% if auth_required %}Everything you have generated, saved to your account so it follows you across devices.{% else %}Everything generated in this browser. Nothing here is
-  tied to an account — it's scoped to this browser's session only.{% endif %}</p>
+<p class="callout">Everything you have generated, saved to your account so it follows you across devices.</p>
 
 {% if not sessions_data %}
   <p>Nothing yet — <a href="{% url 'reading:home' %}">open a text</a> to get started.</p>

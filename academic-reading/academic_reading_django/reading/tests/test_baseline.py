@@ -1,31 +1,36 @@
-"""Pins today's anonymous behaviour. Must pass unchanged with AUTH_REQUIRED off and no sign-in method configured."""
+"""What a signed-in reader gets from the library (the bundled texts, all ungrouped)."""
 
-from django.test import TestCase, override_settings
+from django.test import TestCase
 from django.urls import reverse
 
-from reading.models import ReadingSession
+from reading.models import LibraryText, ReadingSession
+from reading.tests.helpers import prepare_reader
 
 
-@override_settings(AUTH_REQUIRED=False, SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_KEY="", SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_SECRET="", EMAIL_PASSWORD_LOGIN_ENABLED=False)
-class AnonymousBaselineTests(TestCase):
+class SignedInBaselineTests(TestCase):
+    def setUp(self):
+        prepare_reader(self)
+
     def test_home_lists_the_whole_bundled_library(self):
         response = self.client.get(reverse("reading:home"))
         self.assertEqual(response.status_code, 200)
         listed = sum(len(pool) for _, pool in response.context["groups"])
         self.assertEqual(listed, 37)
+        self.assertEqual(LibraryText.objects.count(), 37)
 
     def test_open_creates_a_session_and_history_shows_it(self):
         response = self.client.get(reverse("reading:open", kwargs={"source_ref": "de-01"}))
         self.assertEqual(response.status_code, 302)
         session = ReadingSession.objects.get()
         self.assertEqual(session.source_ref, "lib:de-01")
-        self.assertIsNone(session.user)
+        self.assertEqual(session.user, self.user)
         history = self.client.get(reverse("reading:history"))
         self.assertContains(history, session.title)
-        self.assertContains(history, "this browser")
+        self.assertContains(history, "your account")
 
-    def test_health_is_open(self):
+    def test_health_is_open_to_everyone(self):
+        self.client.logout()
         self.assertEqual(self.client.get("/health/").status_code, 200)
 
-    def test_no_sign_out_control_when_anonymous(self):
-        self.assertNotContains(self.client.get(reverse("reading:home")), "Sign out")
+    def test_sign_out_control_is_shown(self):
+        self.assertContains(self.client.get(reverse("reading:home")), "Sign out")
