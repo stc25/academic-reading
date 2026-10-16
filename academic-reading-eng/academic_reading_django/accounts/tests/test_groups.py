@@ -107,3 +107,70 @@ class GroupAdminTests(TestCase):
         page = self.client.get(reverse("admin:auth_user_change", args=[person.pk]))
         self.assertEqual(page.status_code, 200)
         self.assertContains(page, "groups")
+
+
+class ExistingAccountsGetGroupsImmediatelyTests(TestCase):
+    """Saving an allowlist entry adds accounts that already exist, without waiting for their next sign-in."""
+
+    def setUp(self):
+        self.admin = User.objects.create_superuser("root", "root@x.org", "pw-root-12345")
+        self.client.force_login(self.admin)
+        self.arabic = Group.objects.create(name="Arabic")
+        self.tech = Group.objects.create(name="Technical")
+
+    def add_entry(self, identifier, *groups):
+        return self.client.post(reverse("admin:accounts_allowedlogin_add"),
+                                {"identifier": identifier, "groups": [g.pk for g in groups]}, follow=True)
+
+    def test_exact_email_entry_adds_the_existing_account_on_save(self):
+        person = User.objects.create_user("a@cam.ac.uk", "a@cam.ac.uk")
+        response = self.add_entry("A@Cam.ac.uk", self.arabic)
+        self.assertEqual(list(person.groups.all()), [self.arabic])
+        self.assertContains(response, "Added 1 existing account(s)")
+
+    def test_crsid_entry_matches_the_cambridge_address(self):
+        person = User.objects.create_user("abc123@cam.ac.uk", "abc123@cam.ac.uk")
+        other = User.objects.create_user("abc124@cam.ac.uk", "abc124@cam.ac.uk")
+        self.add_entry("abc123", self.arabic)
+        self.assertEqual(list(person.groups.all()), [self.arabic])
+        self.assertEqual(other.groups.count(), 0)
+
+    def test_domain_entry_matches_that_domain_only(self):
+        inside = User.objects.create_user("a@ling.cam.ac.uk", "a@ling.cam.ac.uk")
+        parent = User.objects.create_user("b@cam.ac.uk", "b@cam.ac.uk")
+        outside = User.objects.create_user("c@elsewhere.org", "c@elsewhere.org")
+        self.add_entry("@ling.cam.ac.uk", self.arabic)
+        self.assertEqual(list(inside.groups.all()), [self.arabic])
+        self.assertEqual(parent.groups.count(), 0)
+        self.assertEqual(outside.groups.count(), 0)
+
+    def test_is_additive_and_does_not_duplicate(self):
+        person = User.objects.create_user("a@cam.ac.uk", "a@cam.ac.uk")
+        person.groups.add(self.tech)
+        self.add_entry("a@cam.ac.uk", self.arabic)
+        entry = AllowedLogin.objects.get()
+        self.assertEqual(entry.apply_groups_to_existing_users(), 0)
+        self.assertEqual(set(person.groups.all()), {self.tech, self.arabic})
+
+    def test_entry_without_groups_or_without_accounts_is_harmless(self):
+        person = User.objects.create_user("a@cam.ac.uk", "a@cam.ac.uk")
+        self.add_entry("a@cam.ac.uk")
+        self.assertEqual(person.groups.count(), 0)
+        response = self.add_entry("nobody@cam.ac.uk", self.arabic)
+        self.assertEqual(response.status_code, 200)
+
+    def test_editing_an_entry_to_add_a_group_applies_it_to_existing_accounts(self):
+        person = User.objects.create_user("a@cam.ac.uk", "a@cam.ac.uk")
+        self.add_entry("a@cam.ac.uk", self.arabic)
+        entry = AllowedLogin.objects.get()
+        self.client.post(reverse("admin:accounts_allowedlogin_change", args=[entry.pk]),
+                         {"identifier": "a@cam.ac.uk", "groups": [self.arabic.pk, self.tech.pk]})
+        self.assertEqual(set(person.groups.all()), {self.arabic, self.tech})
+
+    def test_admin_action_applies_existing_entries(self):
+        entry = AllowedLogin.objects.create(identifier="a@cam.ac.uk")
+        entry.groups.add(self.arabic)
+        person = User.objects.create_user("a@cam.ac.uk", "a@cam.ac.uk")   # account created after the entry
+        self.client.post(reverse("admin:accounts_allowedlogin_changelist"),
+                         {"action": "apply_groups_now", "_selected_action": [entry.pk]})
+        self.assertEqual(list(person.groups.all()), [self.arabic])

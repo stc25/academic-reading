@@ -97,7 +97,23 @@ class AllowedLoginAdmin(ModelAdmin):
     list_display = ("identifier", "matched_user", "group_names", "created_at")
     search_fields = ("identifier",)
     filter_horizontal = ("groups",)
+    actions = ["apply_groups_now"]
 
     @admin.display(description="Groups")
     def group_names(self, obj):
         return ", ".join(g.name for g in obj.groups.all()) or "-"
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).prefetch_related("groups")
+
+    def save_related(self, request, form, formsets, change):
+        """After the groups are saved, add any accounts that already exist (the rest get them at first sign-in)."""
+        super().save_related(request, form, formsets, change)
+        added = form.instance.apply_groups_to_existing_users()
+        if added:
+            self.message_user(request, f"Added {added} existing account(s) to the selected groups straight away.")
+
+    @admin.action(description="Add existing matching accounts to these entries' groups now")
+    def apply_groups_now(self, request, queryset):
+        added = sum(entry.apply_groups_to_existing_users() for entry in queryset)
+        self.message_user(request, f"{added} existing account(s) gained a group.")

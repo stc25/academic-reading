@@ -74,7 +74,10 @@ Groups limit which signed-in readers can open which library text. Everything is 
   groups like *Technical*.
 - **Add people already signed in:** Users -> pick the person -> Groups.
 - **Add people before they have signed in:** Accounts -> Allowed logins -> pick (or add) the entry (an email, a CRSid or
-  `@domain`) -> Groups. At every Microsoft sign-in the person is added to the groups of all matching entries (never removed).
+  `@domain`) -> Groups. Saving the entry also adds any accounts that **already exist** and match it, straight away (the page
+  says how many). People with no account yet get the groups at their first Microsoft sign-in, and every sign-in adds the
+  groups of all matching entries again. It only ever adds: nobody is removed from a group automatically. The list's
+  action **Add existing matching accounts to these entries' groups now** re-applies entries in bulk.
 - **Add a text:** Reading -> Library texts -> Add. Paste the body, or upload a `.txt`/`.md` file (the language is detected
   if left blank). Tick the groups that may read it; leave them empty for everyone signed in.
 - **Assign many texts at once:** in the Library texts list, filter (e.g. by language), select, then choose **Add selected
@@ -116,7 +119,7 @@ From either app's `academic_reading_django/` directory (SQLite is used when `DAT
 DATABASE_URL= PUBLIC_PATH= FORCE_SCRIPT_NAME= STATIC_URL=/static/ python manage.py test accounts reading
 ```
 
-v1: 126 tests, v2: 128. They cover allowlist matching, the pipeline and group syncing at login, login/logout/throttle/redirect
+v1: 133 tests, v2: 135. They cover allowlist matching, the pipeline and group syncing at login, login/logout/throttle/redirect
 safety, set-password link single use, admin invite and resend, the always-on gate (and the 503 page), per-user history
 isolation, the SSO start URL, the who-sees-what matrix, hidden-text 404s on every route, `import_library`, and the
 library admin (paste/upload, bulk actions). Run inside the container image they also include one SSO test

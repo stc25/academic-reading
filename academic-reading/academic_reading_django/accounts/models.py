@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.db import models
 
@@ -41,6 +42,34 @@ class AllowedLogin(models.Model):
     def save(self, *args, **kwargs) -> None:
         self.identifier = self.identifier.strip().lower()
         super().save(*args, **kwargs)
+
+    def matching_users(self):
+        """Existing accounts this entry covers (same rules as ``matches``)."""
+        User = get_user_model()
+        ident = self.identifier
+        if ident.startswith("@"):
+            return User.objects.filter(email__iendswith=ident)
+        if "@" in ident:
+            return User.objects.filter(models.Q(email__iexact=ident) | models.Q(username__iexact=ident))
+        return User.objects.filter(email__iexact=f"{ident}@{CAM_DOMAIN}")  # a bare CRSid
+
+    def apply_groups_to_existing_users(self) -> int:
+        """Add every matching existing account to this entry's groups; returns how many gained a group.
+
+        Additive only, like the sync at sign-in. People who have not signed in yet have no account;
+        they are added when they first sign in.
+        """
+        groups = list(self.groups.all())
+        changed = 0
+        if not groups:
+            return changed
+        for user in self.matching_users():
+            have = set(user.groups.values_list("pk", flat=True))
+            missing = [g for g in groups if g.pk not in have]
+            if missing:
+                user.groups.add(*missing)
+                changed += 1
+        return changed
 
     @classmethod
     def matches(cls, email: str) -> list["AllowedLogin"]:
