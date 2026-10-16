@@ -1,30 +1,50 @@
 {% extends "reading/base.html" %}
 {% block title %}Sign in{% endblock %}
+{% block extra_head %}{% load static %}<link rel="stylesheet" href="{% static 'reading/css/login.css' %}">{% endblock %}
 {% block content %}
-<h1>Sign in</h1>
-{% if error %}<div class="callout error">{{ error }}</div>{% endif %}
+<div class="auth-shell">
+  <section class="auth-panel" aria-labelledby="auth-panel-title">
+    <p class="auth-panel-kicker">Cambridge Language Centre</p>
+    <h1 id="auth-panel-title">Academic Reading (English)</h1>
+    <p class="auth-panel-copy">
+      Practise reading academic texts in any language, with an AI tutor guiding you through ten activities before, during and after reading. Everything the tutor says is in English.
+    </p>
+    <ul class="auth-panel-list">
+      <li>Choose a text from the library, or upload your own</li>
+      <li>Each text carries its own level, so there is nothing to set up</li>
+      <li>Your reading history is saved to your account and follows you across devices</li>
+    </ul>
+  </section>
 
-{% if sso_enabled %}
-  {# social-auth only starts a sign-in on POST (CSRF-protected), so this is a form, not a link. #}
-  <form method="post" action="{% url 'social:begin' 'azuread-tenant-oauth2' %}">
-    {% csrf_token %}
-    <input type="hidden" name="next" value="{{ next }}">
-    <button type="submit" class="btn btn-primary">Sign in with Cambridge (Microsoft)</button>
-  </form>
-{% else %}
-  <p class="callout">Cambridge sign-in is not yet available.</p>
-{% endif %}
+  <div class="auth-card">
+    <h2 class="auth-title">Sign in</h2>
+    {% if error %}<div class="callout error" role="alert">{{ error }}</div>{% endif %}
 
-{% if password_login_enabled %}
-  <h2>Not at Cambridge?</h2>
-  <form method="post" action="{% url 'accounts:login' %}">
-    {% csrf_token %}
-    <input type="hidden" name="next" value="{{ next }}">
-    <div><label for="email">Email</label>
-      <input type="email" id="email" name="email" required autocomplete="username"></div>
-    <div><label for="password">Password</label>
-      <input type="password" id="password" name="password" required autocomplete="current-password"></div>
-    <button type="submit" class="btn btn-primary">Sign in</button>
-  </form>
-{% endif %}
+    {% if sso_enabled %}
+      {# social-auth only starts a sign-in on POST (CSRF-protected), so this is a form, not a link. #}
+      <form method="post" action="{% url 'social:begin' 'azuread-tenant-oauth2' %}">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
+        <button type="submit" class="btn btn-primary btn-block">Sign in with Cambridge (Microsoft)</button>
+      </form>
+      <p class="auth-note">Recommended: use your University of Cambridge (cam.ac.uk) account.</p>
+    {% else %}
+      <p class="callout">Cambridge sign-in is not yet available.</p>
+    {% endif %}
+
+    {% if password_login_enabled %}
+      <p class="auth-divider"><span>Not at Cambridge?</span></p>
+      <form method="post" action="{% url 'accounts:login' %}" class="auth-form">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
+        <div class="auth-field"><label for="email">Email</label>
+          <input type="email" id="email" name="email" required autocomplete="username"></div>
+        <div class="auth-field"><label for="password">Password</label>
+          <input type="password" id="password" name="password" required autocomplete="current-password"></div>
+        <button type="submit" class="btn btn-secondary btn-block">Sign in</button>
+      </form>
+      <p class="auth-note">Accounts for people outside Cambridge are created by an administrator.</p>
+    {% endif %}
+  </div>
+</div>
 {% endblock %}

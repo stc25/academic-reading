@@ -1,0 +1,54 @@
+/* Sign-in page: a brand panel beside the sign-in card (stacked on small screens).
+   Uses only the shared design tokens, so dark mode follows automatically. */
+.auth-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: var(--space-32);
+  align-items: stretch;
+  max-width: 60rem;
+  margin: var(--space-24) auto 0;
+}
+.auth-panel {
+  background: var(--surface-inverse);
+  color: var(--text-inverse);
+  border-radius: var(--radius-lg);
+  padding: var(--space-40);
+}
+.auth-panel h1 { color: inherit; margin-bottom: var(--space-16); }
+.auth-panel-kicker {
+  margin: 0 0 var(--space-12);
+  font-size: var(--text-size-1);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+.auth-panel-copy { margin: 0 0 var(--space-20); line-height: 1.5; }
+.auth-panel-list { margin: 0; padding-left: var(--space-20); display: grid; gap: var(--space-8); }
+.auth-card {
+  background: var(--surface-secondary);
+  border: 1px solid var(--divider-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-32);
+}
+.auth-title { margin-bottom: var(--space-20); }
+.auth-note { margin: var(--space-12) 0 0; font-size: var(--text-size-1); color: var(--text-secondary); }
+.auth-divider {
+  display: flex; align-items: center; gap: var(--space-12);
+  margin: var(--space-24) 0; color: var(--text-secondary); font-size: var(--text-size-1);
+}
+.auth-divider::before, .auth-divider::after { content: ""; flex: 1; border-top: 1px solid var(--divider-subtle); }
+.auth-field { margin-bottom: var(--space-16); }
+.auth-field label { display: block; font-size: var(--text-size-1); margin-bottom: var(--space-4); color: var(--text-secondary); }
+.auth-field input {
+  width: 100%; box-sizing: border-box;
+  padding: var(--space-8) var(--space-12);
+  border: 1px solid var(--divider-strong);
+  border-radius: var(--radius-sm);
+  font: inherit;
+}
+@media (max-width: 767px) {
+  .auth-shell { grid-template-columns: minmax(0, 1fr); gap: var(--space-20); margin-top: 0; }
+  .auth-panel, .auth-card { padding: var(--space-24); }
+}
